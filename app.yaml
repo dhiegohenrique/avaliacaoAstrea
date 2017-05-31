@@ -8,13 +8,13 @@ auto_id_policy: default
 api_version: '1.0'
 handlers:
 - url: (/.*/)
-  static_files: __static__\1index.html
+  static_files: __static__\index.html
   upload: __NOT_USED__
   require_matching_file: True
   login: optional
   secure: optional
 - url: (/)
-  static_files: __static__\1index.html
+  static_files: __static__\index.html
   upload: __NOT_USED__
   require_matching_file: True
   login: optional
