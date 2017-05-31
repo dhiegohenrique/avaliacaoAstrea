@@ -1,0 +1,5 @@
+language: java
+jkd:
+- oraclejdk8
+notifications:
+  email: false
