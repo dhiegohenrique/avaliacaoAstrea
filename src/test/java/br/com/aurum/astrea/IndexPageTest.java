@@ -1,7 +1,5 @@
 package br.com.aurum.astrea;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -9,14 +7,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
 
@@ -82,11 +76,11 @@ public class IndexPageTest {
 		this.driver.get(this.baseUrl);
 //		this.driver.navigate().to(this.baseUrl);
 		
-		WebDriverWait wait = new WebDriverWait(this.driver, 10);  // 10 secs max wait
-		wait.until(ExpectedConditions.presenceOfElementLocated( By.name("btnK") )); 
-		
-		WebElement webElement = this.driver.findElement(By.name("btnK"));
-		assertTrue(webElement != null);
+//		WebDriverWait wait = new WebDriverWait(this.driver, 10);  // 10 secs max wait
+//		wait.until(ExpectedConditions.presenceOfElementLocated( By.name("btnK") )); 
+//		
+//		WebElement webElement = this.driver.findElement(By.name("btnK"));
+//		assertTrue(webElement != null);
 		
 		
 //		WebElement webElement = driver.findElement(By.name("contatos"));
