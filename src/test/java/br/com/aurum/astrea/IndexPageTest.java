@@ -13,6 +13,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -51,15 +52,15 @@ public class IndexPageTest {
 	public void setUp() {
 		ArrayList<String> cliArgsCap = new ArrayList<String>();
 		DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
-//		cliArgsCap.add("--web-security=false");
-//		cliArgsCap.add("--ssl-protocol=any");
-//		cliArgsCap.add("--ignore-ssl-errors=true");
-//		capabilities.setCapability("takesScreenshot", true);
-//		capabilities.setCapability(
-//		    PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cliArgsCap);
-//		capabilities.setCapability(
-//		    PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS,
-//		        new String[] { "--logLevel=2" });
+		cliArgsCap.add("--web-security=false");
+		cliArgsCap.add("--ssl-protocol=any");
+		cliArgsCap.add("--ignore-ssl-errors=true");
+		capabilities.setCapability("takesScreenshot", true);
+		capabilities.setCapability(
+		    PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cliArgsCap);
+		capabilities.setCapability(
+		    PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS,
+		        new String[] { "--logLevel=2" });
 		
 		capabilities.setJavascriptEnabled(true);   
 		this.driver = new PhantomJSDriver(capabilities);
