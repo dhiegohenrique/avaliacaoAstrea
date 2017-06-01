@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import io.github.bonigarcia.wdm.BrowserManager;
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
 
 public class IndexPageTest {
