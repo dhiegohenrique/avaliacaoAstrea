@@ -59,6 +59,7 @@ public class IndexPageTest {
 //		
 		System.err.println("entrou no teste1");
 		this.driver = new PhantomJSDriver();
+		this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.MINUTES);
 		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.MINUTES);
 		System.err.println("entrou no teste2");
 	}
