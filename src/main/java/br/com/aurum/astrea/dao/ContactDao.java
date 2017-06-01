@@ -22,14 +22,9 @@ public class ContactDao {
 	
 	public void save(Contact contact) throws IllegalArgumentException {
 		if (!this.validate(contact)) {
-			throw new IllegalArgumentException("Você deve informar o nome do contato");
+			throw new IllegalArgumentException("O nome do contato não foi informado.");
 		}
 		
-		// TODO: É preciso pesquisar como se usa o Objectify para armazenar a entidade contato no banco de dados.
-		this.saveContact(contact);
-	}
-	
-	private void saveContact(Contact contact) {
 		ofy().save().entity(contact).now();
 	}
 	
@@ -38,8 +33,6 @@ public class ContactDao {
 	}
 	
 	public List<Contact> list() {
-		// TODO: É preciso pesquisar como se usa o Objectify para listar as entidades de contato.
-//		return new ArrayList<>();
 		return ofy().load().type(Contact.class).list();
 	}
 	
@@ -51,8 +44,6 @@ public class ContactDao {
 	
 	public void delete(Long id) {
 		Key<Contact> key = Key.create(Contact.class, id);
-		
-		// TODO: É preciso pesquisar como se usa o Objectify para deletar entidades do banco de dados.
 		ofy().delete().key(key).now();
 	}
 	
@@ -83,23 +74,23 @@ public class ContactDao {
 			Key<Contact> key = Key.create(Contact.class, this.id);
 			
 			Contact contact = ofy().load().key(key).now();
-			ContactDao.this.cloneProperties(contact, this.newContact);
+			this.cloneProperties(contact, this.newContact);
 			ofy().save().entity(contact);
 			return contact;
 		}
-	}
-	
-	private void cloneProperties(Contact destContact, Contact origContact) {
-		destContact.setName(origContact.getName());
-		destContact.setBirthDay(origContact.getBirthDay());
-		destContact.setBirthMonth(origContact.getBirthMonth());
-		destContact.setBirthYear(origContact.getBirthYear());
-		destContact.setCpf(origContact.getCpf());
-		destContact.setRg(origContact.getRg());
-		destContact.setAddress(origContact.getAddress());
-		destContact.setObservation(origContact.getObservation());
 		
-		destContact.setPhones(origContact.getPhones());
-		destContact.setEmails(origContact.getEmails());
+		private void cloneProperties(Contact destContact, Contact origContact) {
+			destContact.setName(origContact.getName());
+			destContact.setBirthDay(origContact.getBirthDay());
+			destContact.setBirthMonth(origContact.getBirthMonth());
+			destContact.setBirthYear(origContact.getBirthYear());
+			destContact.setCpf(origContact.getCpf());
+			destContact.setRg(origContact.getRg());
+			destContact.setAddress(origContact.getAddress());
+			destContact.setObservation(origContact.getObservation());
+			
+			destContact.setPhones(origContact.getPhones());
+			destContact.setEmails(origContact.getEmails());
+		}
 	}
 }
