@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import io.github.bonigarcia.wdm.PhantomJsDriverManager;
+
 public class IndexPageTest {
 	
 	private static WebDriver driver;
@@ -22,9 +24,7 @@ public class IndexPageTest {
 //		caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, driverPath);
 //		driver = new PhantomJSDriver(caps);
 		
-//		PhantomJsDriverManager.getInstance().setup();
-		
-//		PhantomJsDriverManager.getInstance().setup();
+		PhantomJsDriverManager.getInstance().setup();
 //		driver = new PhantomJSDriver();
 //		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 //		driver.get(baseUrl);
