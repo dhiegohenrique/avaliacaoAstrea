@@ -1,16 +1,10 @@
 package br.com.aurum.astrea;
 
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
 
@@ -44,21 +38,21 @@ public class IndexPageTest {
 	
 	@Before
 	public void setUp() {
-		ArrayList<String> cliArgsCap = new ArrayList<String>();
-		DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
-		cliArgsCap.add("--web-security=false");
-		cliArgsCap.add("--ssl-protocol=any");
-		cliArgsCap.add("--ignore-ssl-errors=true");
-		capabilities.setCapability("takesScreenshot", true);
-		capabilities.setCapability(
-		    PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cliArgsCap);
-		capabilities.setCapability(
-		    PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS,
-		        new String[] { "--logLevel=2" });
-		
-		capabilities.setJavascriptEnabled(true);   
-		this.driver = new PhantomJSDriver(capabilities);
-		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+//		ArrayList<String> cliArgsCap = new ArrayList<String>();
+//		DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
+//		cliArgsCap.add("--web-security=false");
+//		cliArgsCap.add("--ssl-protocol=any");
+//		cliArgsCap.add("--ignore-ssl-errors=true");
+//		capabilities.setCapability("takesScreenshot", true);
+//		capabilities.setCapability(
+//		    PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cliArgsCap);
+//		capabilities.setCapability(
+//		    PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS,
+//		        new String[] { "--logLevel=2" });
+//		
+//		capabilities.setJavascriptEnabled(true);   
+//		this.driver = new PhantomJSDriver(capabilities);
+//		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 	
 //		
 //		this.driver = new PhantomJSDriver();
@@ -73,7 +67,7 @@ public class IndexPageTest {
 	
 	@Test
 	public void verifyContactsLinkExists() {
-		this.driver.get(this.baseUrl);
+//		this.driver.get(this.baseUrl);
 //		this.driver.navigate().to(this.baseUrl);
 		
 //		WebDriverWait wait = new WebDriverWait(this.driver, 10);  // 10 secs max wait
