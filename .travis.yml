@@ -1,7 +1,7 @@
 language: java
 #jkd:
 #- oraclejdk8
-jdk: oraclejdk7
+#jdk: oraclejdk8
 notifications:
   email: false
 script:
