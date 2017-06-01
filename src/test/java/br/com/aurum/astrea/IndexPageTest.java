@@ -57,8 +57,10 @@ public class IndexPageTest {
 //		this.driver = new PhantomJSDriver(capabilities);
 	
 //		
+		System.err.println("entrou no teste1");
 		this.driver = new PhantomJSDriver();
-		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.MINUTES);
+		System.err.println("entrou no teste2");
 	}
 	
 	@After
@@ -70,7 +72,7 @@ public class IndexPageTest {
 	
 	@Test
 	public void verifyContactsLinkExists() {
-		System.err.println("entrou no teste1");
+		System.err.println("entrou no teste3");
 //		this.driver.get(this.baseUrl);
 //		this.driver.navigate().to(this.baseUrl);
 		
