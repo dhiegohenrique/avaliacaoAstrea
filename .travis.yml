@@ -3,6 +3,8 @@ jkd:
 - oraclejdk8
 notifications:
   email: false
+script:
+- mvn appengine:update
 #deploy:
 #  provider: gae
 #  project: avaliacaoastrea
