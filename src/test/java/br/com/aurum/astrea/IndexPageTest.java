@@ -3,6 +3,7 @@ package br.com.aurum.astrea;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class IndexPageTest {
 	
@@ -16,8 +17,8 @@ public class IndexPageTest {
 //		System.setProperty("webdriver.chrome.driver", "D:\\Arquivos de Programas\\chromedriver\\chromedriver.exe");
 //		driver = new ChromeDriver();
 
-//		DesiredCapabilities caps = new DesiredCapabilities();
-//		caps.setJavascriptEnabled(true);                
+		DesiredCapabilities caps = new DesiredCapabilities();
+		caps.setJavascriptEnabled(true);                
 //		caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, driverPath);
 //		driver = new PhantomJSDriver(caps);
 		
