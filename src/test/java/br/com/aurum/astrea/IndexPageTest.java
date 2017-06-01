@@ -3,6 +3,7 @@ package br.com.aurum.astrea;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -61,11 +62,11 @@ public class IndexPageTest {
 //		        new String[] { "--logLevel=2" });
 		
 		capabilities.setJavascriptEnabled(true);   
-//		this.driver = new PhantomJSDriver(capabilities);
-//		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+		this.driver = new PhantomJSDriver(capabilities);
+		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 	
 //		
-		this.driver = new PhantomJSDriver();
+//		this.driver = new PhantomJSDriver();
 	}
 	
 	@After
