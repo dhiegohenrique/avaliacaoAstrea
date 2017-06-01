@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -89,7 +90,7 @@ public class ContactServletTest {
 	}
 	
 	@Test
-	public void sholdBeRetornContactById() throws IOException {
+	public void sholdBeReturnContactById() throws IOException {
 		List<Contact> listInsertContacts = this.insertContacts();
 		Contact contact = listInsertContacts.get(0);
 		
@@ -107,9 +108,7 @@ public class ContactServletTest {
 	}
 	
 	@Test
-	public void sholdBeRetornStatusNotFound() throws IOException {
-		this.insertContacts();
-		
+	public void sholdBeReturnStatus404WhenContactNotFound() throws IOException {
 		when(this.req.getRequestURI()).thenReturn("contacts/1234567");
 		
 		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
@@ -140,6 +139,122 @@ public class ContactServletTest {
 		
 		assertEquals(HttpServletResponse.SC_CREATED, intArg.getValue().intValue());
 		assertTrue(stringResponse.contains("{id : "));
+	}
+	
+	@Test
+	public void shouldBeReturnStatus500WhenSavingAContactWithABlankName() throws IOException {
+		Contact contact = new Contact();
+		
+		BufferedReader bufferedReader = new BufferedReader(new StringReader(this.gson.toJson(contact)));
+		when(this.req.getReader()).thenReturn(bufferedReader);
+		
+		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
+		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
+
+		this.contactServlet.doPost(this.req, this.resp);
+		
+		assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, intArg.getValue().intValue());
+	}
+	
+	@Test
+	public void shouldBeReturnStatus500WhenEditingAContactWithoutId() throws IOException, ServletException {
+		when(this.req.getRequestURI()).thenReturn("contacts/");
+		
+		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
+		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
+
+		this.contactServlet.doPut(this.req, this.resp);
+
+		assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, intArg.getValue().intValue());
+	}
+	
+	@Test
+	public void shouldBeReturnStatus404WhenEditingAContactNotFound() throws IOException, ServletException {
+		when(this.req.getRequestURI()).thenReturn("contacts/1234567");
+		
+		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
+		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
+
+		this.contactServlet.doPut(this.req, this.resp);
+
+		assertEquals(HttpServletResponse.SC_NOT_FOUND, intArg.getValue().intValue());
+	}
+	
+	@Test
+	public void shouldBeReturnStatus500WhenEditingAnUninformedContact() throws IOException, ServletException {
+		List<Contact> listInsertContacts = this.insertContacts();
+		when(this.req.getRequestURI()).thenReturn("contacts/" + listInsertContacts.get(0).getId());
+		
+		BufferedReader bufferedReader = new BufferedReader(new StringReader(""));
+		when(this.req.getReader()).thenReturn(bufferedReader);
+		
+		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
+		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
+
+		this.contactServlet.doPut(this.req, this.resp);
+		assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, intArg.getValue().intValue());
+	}
+	
+	@Test
+	public void shouldBeReturnStatus204WhenEditingAContact() throws IOException, ServletException {
+		List<Contact> listInsertContacts = this.insertContacts();
+		Contact contact = listInsertContacts.get(0);
+		
+		BufferedReader bufferedReader = new BufferedReader(new StringReader(this.gson.toJson(contact)));
+		
+		when(this.req.getRequestURI()).thenReturn("contacts/" + contact.getId());
+		when(this.req.getReader()).thenReturn(bufferedReader);
+		
+		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
+		doNothing().when(this.resp).setStatus(intArg.capture());
+
+		this.contactServlet.doPut(this.req, this.resp);
+		assertEquals(HttpServletResponse.SC_NO_CONTENT, intArg.getValue().intValue());
+	}
+	
+	@Test
+	public void shouldBeReturnStatus500WhenDeletingAContactWithoutId() throws IOException, ServletException {
+		when(this.req.getRequestURI()).thenReturn("contacts/");
+		
+		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
+		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
+
+		this.contactServlet.doDelete(this.req, this.resp);
+		assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, intArg.getValue().intValue());
+	}
+	
+	@Test
+	public void shouldBeReturnStatus404WhenDeletingAContactNotFound() throws IOException, ServletException {
+		when(this.req.getRequestURI()).thenReturn("contacts/1234567");
+		
+		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
+		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
+
+		this.contactServlet.doDelete(this.req, this.resp);
+		assertEquals(HttpServletResponse.SC_NOT_FOUND, intArg.getValue().intValue());
+	}
+	
+	@Test
+	public void shouldBeReturnStatus204WhenDeletingAContact() throws IOException, ServletException {
+		List<Contact> listInsertContacts = this.insertContacts();
+		Contact contact = listInsertContacts.get(0);
+		
+		BufferedReader bufferedReader = new BufferedReader(new StringReader(this.gson.toJson(contact)));
+		
+		when(this.req.getRequestURI()).thenReturn("contacts/" + contact.getId());
+		when(this.req.getReader()).thenReturn(bufferedReader);
+		
+		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
+		doNothing().when(this.resp).setStatus(intArg.capture());
+
+		this.contactServlet.doDelete(this.req, this.resp);
+		assertEquals(HttpServletResponse.SC_NO_CONTENT, intArg.getValue().intValue());
 	}
 	
 	private List<Contact> getListContacts(String stringResponse) {

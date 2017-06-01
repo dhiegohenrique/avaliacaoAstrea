@@ -21,15 +21,20 @@ import br.com.aurum.astrea.domain.Contact;
 public class ContactServlet extends HttpServlet {
 	
 	private static final ContactDao DAO = new ContactDao();
-
+	
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		BufferedReader reader = req.getReader();
-		String line = reader.readLine();
-		Contact contact = new Gson().fromJson(line, Contact.class);
-		DAO.save(contact);
-		resp.setStatus(HttpServletResponse.SC_CREATED);
+		Contact contact = this.getContact(req);
 		resp.setContentType("application/json;charset=UTF-8");
+
+		try {
+			DAO.save(contact);
+		} catch (IllegalArgumentException e) {
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return;
+		}
+
+		resp.setStatus(HttpServletResponse.SC_CREATED);
 		
 		PrintWriter out = resp.getWriter();
 		out.println(String.format("{id : %s}", contact.getId()));
@@ -45,6 +50,12 @@ public class ContactServlet extends HttpServlet {
 		
 		// TODO: Implementar um método que irá ler o corpo da requisição e, com essas informações,
 		// salvar no banco de dados uma entidade do tipo 'Contato' com essas informações.
+	}
+	
+	private Contact getContact(HttpServletRequest req) throws IOException {
+		BufferedReader reader = req.getReader();
+		String line = reader.readLine();
+		return new Gson().fromJson(line, Contact.class);
 	}
 	
 	private void escreveJSON(HttpServletRequest req, HttpServletResponse resp, Contact contact) throws ServletException, IOException {
@@ -72,7 +83,6 @@ public class ContactServlet extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		System.err.println("entrou aqui2");
 		// TODO: Implementar um método que irá listar todas as entidades do tipo 'Contato' e devolver para o client essa listagem.
 		
 		resp.setContentType("application/json;charset=UTF-8");
@@ -117,12 +127,42 @@ public class ContactServlet extends HttpServlet {
 	}
 	
 	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		System.err.println("entrou aqui3");
-		// TODO: Implementar um método que irá deletar uma entidade do tipo 'Contato', dado parâmetro de identificação.
-		String contactId = req.getParameter("contactId");
-		if (contactId != null) {
-			DAO.delete(Long.valueOf(contactId));
+	public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		Long id = this.getId(req);
+		if (id == null) {
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "O ID do contato deve ser informado.");
+			return;
 		}
+		
+		if (!DAO.isContactExists(id)) {
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Contato não encontrado.");
+			return;
+		}
+		
+		DAO.delete(id);
+		resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+	}
+	
+	@Override
+	public void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Long id = this.getId(req);
+		if (id == null) {
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "O ID do contato deve ser informado.");
+			return;
+		}
+		
+		if (!DAO.isContactExists(id)) {
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Contato não encontrado.");
+			return;
+		}
+		
+		Contact contact = this.getContact(req);
+		if (contact == null) {
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "O contato deve ser informado.");
+			return;
+		}
+		
+		DAO.update(id, contact);
+		resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
 	}
 }
