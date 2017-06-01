@@ -89,7 +89,7 @@
 			<artifactId>gson</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
@@ -160,6 +160,10 @@
 				<version>${appengine.target.version}</version>
 				<configuration>
 					<enableJarClasses>false</enableJarClasses>
+					<oauth2>false</oauth2>
+					<additionalParams>
+						<additionalParam>--service_account_json_key_file=service-account.json</additionalParam>
+					</additionalParams>
 				</configuration>
 				<executions>
 					<execution>

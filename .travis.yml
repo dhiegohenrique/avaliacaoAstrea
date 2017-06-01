@@ -3,6 +3,6 @@ jkd:
 - oraclejdk8
 notifications:
   email: false
-deploy:
-  provider: gae
-  project: avaliacaoastrea
+#deploy:
+#  provider: gae
+#  project: avaliacaoastrea
