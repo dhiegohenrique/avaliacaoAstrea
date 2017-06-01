@@ -1,5 +1,6 @@
 package br.com.aurum.astrea.service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.Gson;
 
@@ -22,13 +23,18 @@ public class ContactServlet extends HttpServlet {
 	private static final ContactDao DAO = new ContactDao();
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		System.err.println("entrou aqui1");
-		List<String> lines = IOUtils.readLines(req.getInputStream());
-		
-		Contact contact = new Gson().fromJson(lines.get(0), Contact.class);
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		BufferedReader reader = req.getReader();
+		String line = reader.readLine();
+		Contact contact = new Gson().fromJson(line, Contact.class);
 		DAO.save(contact);
-		resp.setStatus(201);
+		resp.setStatus(HttpServletResponse.SC_CREATED);
+		resp.setContentType("application/json;charset=UTF-8");
+		
+		PrintWriter out = resp.getWriter();
+		out.println(String.format("{id : %s}", contact.getId()));
+		out.close();
+		
 //		try {
 //			escreveJSON(req, resp, contact);
 //		} catch (ServletException e) {
@@ -65,15 +71,48 @@ public class ContactServlet extends HttpServlet {
 	}
 	
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		System.err.println("entrou aqui2");
 		// TODO: Implementar um método que irá listar todas as entidades do tipo 'Contato' e devolver para o client essa listagem.
 		
-		List<Contact> listContacts = DAO.list();
 		resp.setContentType("application/json;charset=UTF-8");
+
+		Long id = this.getId(req);
+		if (id == null) {
+			this.doGetAllContacts(resp);
+		} else {
+			this.doGetContactById(id, resp);
+		}
+	}
+	
+	private Long getId(HttpServletRequest req) {
+		String requestURI = req.getRequestURI();
+		String id = StringUtils.substringAfterLast(requestURI, "contacts/");
+		
+		if (StringUtils.isBlank(id)) {
+			return null;
+		}
+		
+		return Long.valueOf(id);
+	}
+	
+	private void doGetAllContacts(HttpServletResponse resp) throws IOException {
+		List<Contact> listContacts = DAO.list();
 		
 		PrintWriter out = resp.getWriter();
 		out.println(new Gson().toJson(listContacts));
+		out.close();
+	}
+	
+	private void doGetContactById(Long id, HttpServletResponse resp) throws IOException {
+		Contact contact = DAO.getContactById(id);
+		if (contact == null) {
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Contato não encontrado.");
+			return;
+		}
+		
+		PrintWriter out = resp.getWriter();
+		out.println(new Gson().toJson(contact));
 		out.close();
 	}
 	
