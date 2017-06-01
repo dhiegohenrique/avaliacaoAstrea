@@ -1,10 +1,13 @@
 package br.com.aurum.astrea;
 
+import java.util.concurrent.TimeUnit;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
 
@@ -52,10 +55,10 @@ public class IndexPageTest {
 //		
 //		capabilities.setJavascriptEnabled(true);   
 //		this.driver = new PhantomJSDriver(capabilities);
-//		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 	
 //		
-//		this.driver = new PhantomJSDriver();
+		this.driver = new PhantomJSDriver();
+		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 	}
 	
 	@After
@@ -67,6 +70,7 @@ public class IndexPageTest {
 	
 	@Test
 	public void verifyContactsLinkExists() {
+		System.err.println("entrou no teste1");
 //		this.driver.get(this.baseUrl);
 //		this.driver.navigate().to(this.baseUrl);
 		
