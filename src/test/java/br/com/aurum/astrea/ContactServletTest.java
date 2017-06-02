@@ -132,13 +132,14 @@ public class ContactServletTest {
 		
 		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
 		doNothing().when(this.resp).setStatus(intArg.capture());
-
+		
 		this.contactServlet.doPost(this.req, this.resp);
 		
 		String stringResponse = stringWriter.toString();
+		System.err.println("STRINGRESPONSE: " + stringResponse);
 		
 		assertEquals(HttpServletResponse.SC_CREATED, intArg.getValue().intValue());
-		assertTrue(stringResponse.contains("{id : "));
+		assertTrue(stringResponse.contains("id"));
 	}
 	
 	@Test

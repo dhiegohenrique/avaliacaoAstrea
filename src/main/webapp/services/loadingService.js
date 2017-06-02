@@ -21,7 +21,9 @@ function loadingService($uibModal, $templateCache) {
     };
 
     service.closeModal = function closeModal() {
-        if (instance === null || instance === undefined) {
+    	console.log("fechar modal");
+    	
+        if (!instance) {
             return;
         }
 
