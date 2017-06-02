@@ -1,6 +1,6 @@
 package br.com.aurum.astrea;
 
-import java.util.concurrent.TimeUnit;
+import java.io.File;
 
 import org.junit.After;
 import org.junit.Before;
@@ -8,8 +8,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
+import net.anthavio.phanbedder.Phanbedder;
 
 public class IndexPageTest {
 	
@@ -41,6 +44,14 @@ public class IndexPageTest {
 	
 	@Before
 	public void setUp() {
+		File phantomjs = Phanbedder.unpack(); //Phanbedder to the rescue!
+		DesiredCapabilities dcaps = new DesiredCapabilities();
+		dcaps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjs.getAbsolutePath());
+		
+		PhantomJSDriver driver = new PhantomJSDriver(dcaps);
+		System.err.println("\n\nDRIVER: " + phantomjs.getAbsolutePath() + "\n\n");
+		
+		
 //		ArrayList<String> cliArgsCap = new ArrayList<String>();
 //		DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
 //		cliArgsCap.add("--web-security=false");
@@ -58,9 +69,9 @@ public class IndexPageTest {
 	
 //		
 		System.err.println("entrou no teste1");
-		this.driver = new PhantomJSDriver();
-		this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.MINUTES);
-		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.MINUTES);
+//		this.driver = new PhantomJSDriver();
+//		this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.MINUTES);
+//		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.MINUTES);
 		System.err.println("entrou no teste2");
 	}
 	
