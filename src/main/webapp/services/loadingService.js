@@ -1,8 +1,10 @@
 "use strict";
 
-angular.module("avaliacandidatos").service("loadingService", ["$uibModal", "$templateCache", loadingService]);
+angular.module("avaliacandidatos").service("loadingService", loadingService);
 
-function loadingService($uibModal, $templateCache) {
+function loadingService($uibModal) {
+	console.log("entrou em loadingService");
+	
     var service = {};
     var instance;
 
@@ -13,11 +15,11 @@ function loadingService($uibModal, $templateCache) {
         
         console.log("Abrir modal");
 
-        instance = $uibModal.open({
-            template: $templateCache.get("/view/loadingModal.html"),
-            size : "sm",
-            backdrop : "static"
-        });
+//        instance = $uibModal.open({
+//            template: $templateCache.get("/view/loadingModal.html"),
+//            size : "sm",
+//            backdrop : "static"
+//        });
     };
 
     service.closeModal = function closeModal() {

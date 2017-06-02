@@ -37,6 +37,35 @@ app.config([ '$urlRouterProvider', '$stateProvider',
 
 		} ]);
 
+//app.config([
+//            '$httpProvider',
+//            "$uibModal",
+//            appConfig
+//        ]);
+//
+//function appConfig($httpProvider, $uibModal){
+//    $httpProvider.interceptors.push(function(){
+//        return {
+//            'request': function(config) {
+//            	console.log("TESTE1: " + $uibModal);
+//                return config;
+//            },
+//
+//            'response': function(response) {
+//                console.log("TESTE2");
+//                return response;
+//            }
+//        }
+//    });
+//}
+
+
+
+//app.config(["$httpProvider", function interceptorsConfig($httpProvider) {
+//	$httpProvider.interceptors.push("errorInterceptor");
+//	$httpProvider.interceptors.push("loadingInterceptor");
+//}]);
+
 app.directive('ngBack', function() {
 	return function(scope, element, attrs) {
 		element.bind('click', function(evt) {
@@ -53,4 +82,4 @@ mainController = function($scope, $window) {
 };
 
 app.controller('mainController', mainController);
-app.$inject = [ '$scope', '$http', '$cookies' ];
+app.$inject = [ '$scope', '$http', '$cookies'];

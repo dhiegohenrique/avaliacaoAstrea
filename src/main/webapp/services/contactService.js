@@ -1,8 +1,10 @@
 "use strict";
 
-angular.module("avaliacandidatos").service("contactService", contactService);
+angular.module("avaliacandidatos").service("contactService", ["$http", "$q", contactService]);
 
 function contactService($http, $q) {
+	console.log("entrou em contactService");
+	
     function getContacts() {
         var deferred = $q.defer();
 

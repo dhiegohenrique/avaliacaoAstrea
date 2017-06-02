@@ -10,10 +10,12 @@ contactListController = function($scope, $state, contactService) {
 	
 	$scope.listAllContacts = function() {
 		$scope.spinner = true;
+		$('#loadingModal').modal('show');
 		
 		contactService.getContacts()
 			.then(function(response) {
 				$scope.contacts = response;
+				$('#loadingModal').modal('hide');
 			})
 			.finally(function() {
 				$scope.spinner = false;
@@ -34,7 +36,14 @@ contactListController = function($scope, $state, contactService) {
 		contactService.deleteContact($scope.preDeletedContact)
 			.then(function(response) {
 				$('#myModal').modal('hide');
-				$state.go("main.contacts", {}, {reload: "main.contacts"});
+//				$('#myModal').close();
+//				$('#myModal').hide();
+//				$state.go("main.contacts", {}, {reload: "main.contacts"});
+				
+				$('#myModal').on('hidden.bs.modal', function () {
+					console.log("FECHOU A MODAL");
+					$state.go("main.contacts", {}, {reload: "main.contacts"});
+				})
 			})
 			.finally(function() {
 				$scope.spinner = false;

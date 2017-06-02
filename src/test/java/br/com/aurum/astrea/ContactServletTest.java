@@ -136,8 +136,6 @@ public class ContactServletTest {
 		this.contactServlet.doPost(this.req, this.resp);
 		
 		String stringResponse = stringWriter.toString();
-		System.err.println("STRINGRESPONSE: " + stringResponse);
-		
 		assertEquals(HttpServletResponse.SC_CREATED, intArg.getValue().intValue());
 		assertTrue(stringResponse.contains("id"));
 	}
