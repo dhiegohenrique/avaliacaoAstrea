@@ -778,3 +778,32 @@ e7-9472-215e2cd867b7] - page.settings - {"XSSAuditingEnabled":false,"javascriptC
 [ERROR - 2017-06-02T00:39:48.575Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496363988528
 [ERROR - 2017-06-02T00:39:49.321Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496363989290
 [INFO  - 2017-06-02T00:39:50.034Z] ShutdownReqHand - _handle - About to shutdown
+[INFO  - 2017-06-02T00:47:48.918Z] GhostDriver - Main - running on port 33834
+[INFO  - 2017-06-02T00:47:49.086Z] Session [19d8aba0-472d-11e7-ba14-974be08a26fe] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.8 Safari/534.34","webSecurityEnabled":false}
+[INFO  - 2017-06-02T00:47:49.086Z] Session [19d8aba0-472d-11e7-ba14-974be08a26fe] - page.customHeaders:  - {}
+[INFO  - 2017-06-02T00:47:49.086Z] Session [19d8aba0-472d-11e7-ba14-974be08a26fe] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"1.9.8","driverName":"ghostdriver","driverVersion":"1.1.0","platform":"windows-8-32bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2017-06-02T00:47:49.086Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 19d8aba0-472d-11e7-ba14-974be08a26fe
+[ERROR - 2017-06-02T00:47:51.260Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496364471205
+[ERROR - 2017-06-02T00:47:52.158Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496364472106
+[ERROR - 2017-06-02T00:47:52.951Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496364472944
+[ERROR - 2017-06-02T00:47:53.748Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496364473710
+[ERROR - 2017-06-02T00:47:54.559Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496364474529
+[ERROR - 2017-06-02T00:47:55.378Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496364475336
+[ERROR - 2017-06-02T00:47:56.207Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496364476154
+[ERROR - 2017-06-02T00:47:57.015Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496364476970
+[ERROR - 2017-06-02T00:47:57.833Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496364477791
+[ERROR - 2017-06-02T00:47:58.638Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496364478621
+[ERROR - 2017-06-02T00:47:59.457Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496364479419
+[ERROR - 2017-06-02T00:48:00.282Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496364480240
+[ERROR - 2017-06-02T00:48:01.078Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496364481060
+[INFO  - 2017-06-02T00:48:01.170Z] ShutdownReqHand - _handle - About to shutdown
+[INFO  - 2017-06-02T00:57:34.854Z] GhostDriver - Main - running on port 13500
+[INFO  - 2017-06-02T00:57:35.110Z] Session [77248800-472e-11e7-a23e-6b620eddce5d] - page.settings - {"XSSAuditingEnabled":false,"dpi":96,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/602.1 (KHTML, like Gecko) PhantomJS/2.5.0-development Version/9.0 Safari/602.1","webSecurityEnabled":false}
+[INFO  - 2017-06-02T00:57:35.111Z] Session [77248800-472e-11e7-a23e-6b620eddce5d] - page.customHeaders:  - []
+[INFO  - 2017-06-02T00:57:35.111Z] Session [77248800-472e-11e7-a23e-6b620eddce5d] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.5.0","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"windows-10-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2017-06-02T00:57:35.111Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 77248800-472e-11e7-a23e-6b620eddce5d
+[ERROR - 2017-06-02T00:57:35.415Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496365055371
+[ERROR - 2017-06-02T00:57:36.164Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496365056126
+[ERROR - 2017-06-02T00:57:36.934Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496365056875
+[ERROR - 2017-06-02T00:57:37.665Z] WebElementLocator - _handleLocateCommand - Element(s) NOT Found: GAVE UP. Search Stop Time: 1496365057646
+[INFO  - 2017-06-02T00:57:38.315Z] ShutdownReqHand - _handle - About to shutdown
