@@ -1,16 +1,24 @@
 package br.com.aurum.astrea;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
 import net.anthavio.phanbedder.Phanbedder;
@@ -46,27 +54,30 @@ public class IndexPageTest {
 	@Before
 	public void setUp() {
 		File phantomjs = Phanbedder.unpack(); //Phanbedder to the rescue!
-		DesiredCapabilities dcaps = new DesiredCapabilities();
-		dcaps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjs.getAbsolutePath());
-		
-		this.driver = new PhantomJSDriver(dcaps);
+//		DesiredCapabilities dcaps = new DesiredCapabilities();
+//		dcaps.setJavascriptEnabled(true);   
+//		dcaps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjs.getAbsolutePath());
+//		
+//		this.driver = new PhantomJSDriver(dcaps);
 		System.err.println("\n\nDRIVER: " + phantomjs.getAbsolutePath() + "\n\n");
 		
 		
-//		ArrayList<String> cliArgsCap = new ArrayList<String>();
-//		DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
-//		cliArgsCap.add("--web-security=false");
-//		cliArgsCap.add("--ssl-protocol=any");
-//		cliArgsCap.add("--ignore-ssl-errors=true");
-//		capabilities.setCapability("takesScreenshot", true);
-//		capabilities.setCapability(
-//		    PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cliArgsCap);
-//		capabilities.setCapability(
-//		    PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS,
-//		        new String[] { "--logLevel=2" });
-//		
-//		capabilities.setJavascriptEnabled(true);   
-//		this.driver = new PhantomJSDriver(capabilities);
+		List<String> cliArgsCap = new ArrayList<String>();
+		DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
+		cliArgsCap.add("--web-security=false");
+		cliArgsCap.add("--ssl-protocol=any");
+		cliArgsCap.add("--ignore-ssl-errors=true");
+		capabilities.setCapability("takesScreenshot", true);
+		capabilities.setCapability(
+		    PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cliArgsCap);
+		capabilities.setCapability(
+		    PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS,
+		        new String[] { "--logLevel=2" });
+		
+		capabilities.setJavascriptEnabled(true);   
+//		capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjs.getAbsolutePath());
+		
+		this.driver = new PhantomJSDriver(capabilities);
 	
 //		
 		System.err.println("entrou no teste1");
@@ -86,14 +97,18 @@ public class IndexPageTest {
 	@Test
 	public void verifyContactsLinkExists() {
 		System.err.println("entrou no teste3");
-//		this.driver.get(this.baseUrl);
+		this.driver.get(this.baseUrl);
+		System.err.println("entrou no teste4");
 //		this.driver.navigate().to(this.baseUrl);
 		
-//		WebDriverWait wait = new WebDriverWait(this.driver, 10);  // 10 secs max wait
-//		wait.until(ExpectedConditions.presenceOfElementLocated( By.name("btnK") )); 
+		WebDriverWait wait = new WebDriverWait(this.driver, 10);  // 10 secs max wait
+		wait.until(ExpectedConditions.presenceOfElementLocated( By.name("btnK") )); 
+		System.err.println("entrou no teste5");
+		
+		System.err.println("\n\nSOURCE:\n\n" + this.driver.getPageSource() + "\n\n");
 //		
-//		WebElement webElement = this.driver.findElement(By.name("btnK"));
-//		assertTrue(webElement != null);
+		WebElement webElement = this.driver.findElement(By.name("btnK"));
+		assertTrue(webElement != null);
 		
 		
 //		WebElement webElement = driver.findElement(By.name("contatos"));
