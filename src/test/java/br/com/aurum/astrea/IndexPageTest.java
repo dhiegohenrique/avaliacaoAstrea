@@ -3,7 +3,6 @@ package br.com.aurum.astrea;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -78,7 +77,7 @@ public class IndexPageTest {
 		System.err.println("entrou no teste1");
 		this.driver = new PhantomJSDriver();
 //		this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.MINUTES);
-		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.MINUTES);
+//		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.MINUTES);
 		System.err.println("entrou no teste2");
 	}
 	
