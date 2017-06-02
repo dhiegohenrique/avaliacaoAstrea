@@ -2,7 +2,8 @@
 
 	<div class="app-page-header">
 		<div class="page-title">
-			<h3 >Adicionar contato</h3>
+			<h3>Adicionar contato</h3>
+			<h3>{{spinner}}</h3>
 		</div>
 	</div>
 
@@ -20,7 +21,7 @@
 		<label for="lastname" class="col-sm-2 control-label">Nascimento</label>
 		<div class="col-sm-2">
 			<input type="text" class="form-control" id="lastname"
-				placeholder="Dia" ng-model="contact.birthDay">
+				placeholder="Dia" ng-model="contact.birthDay" number-only>
 		</div>
 
 		<div class="col-sm-2">
@@ -52,7 +53,8 @@
 		<label class="col-sm-2 control-label">Telefone</label>
 		<div class="col-sm-6">
 			<div ng-repeat='p in contact.phones track by $index' class="input-group repeater">
-				<input type="text" class="form-control  " placeholder="Digite o telefone" ng-model='contact.phones[$index]'>
+				<input type="text" class="form-control" placeholder="Digite o telefone" ng-model='contact.phones[$index]'
+					ng-pattern="/^\([1-9]{2}\)[0-9]{4,5}-[0-9]{4}$/">
 				<span class="input-group-btn">
         			<button class="btn mybtn" type="button" ng-click='deletePhone($index)'><span class="glyphicon glyphicon-remove "></span></button>
         		</span>
@@ -98,4 +100,7 @@
 		<a class="cancel" ng-back>Cancelar</a>
 		<button class="btn btn-default" ng-click="save()">Salvar</button>
 	</div>
+	
+	<ui-view></ui-view>
+<!-- <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ui-view></div> -->
 </form>

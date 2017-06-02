@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import br.com.aurum.astrea.dao.ContactDao;
 import br.com.aurum.astrea.domain.Contact;
@@ -36,8 +37,17 @@ public class ContactServlet extends HttpServlet {
 
 		resp.setStatus(HttpServletResponse.SC_CREATED);
 		
-		String jsonResponse = String.format("{id : %s}", contact.getId());
-		this.writeJSON(resp, jsonResponse);
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("id", contact.getId());
+		this.writeJSON(resp, jsonObject);
+	}
+	
+	private void writeJSON(HttpServletResponse resp, JsonObject jsonObject) throws IOException {
+		resp.setContentType(MediaType.JSON_UTF_8.toString());
+		
+		PrintWriter out = resp.getWriter();
+		out.println(jsonObject);
+		out.close();
 	}
 	
 	private Contact getContact(HttpServletRequest req) throws IOException {

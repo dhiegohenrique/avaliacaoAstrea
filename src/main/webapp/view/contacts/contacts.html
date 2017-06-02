@@ -25,7 +25,10 @@
         <tbody>
 
           <tr ng-repeat="c in contacts">
-            <td>{{c.name}}</td>
+<!--           http://localhost:3002/#/addeditcontact -->
+<!--             <td><a href="/addeditcontact/" + {{c.id}}>{{c.name}}</a></td> -->
+<!-- 			<td ui-sref="main.addeditcontact({id: c.id})">{{c.name}}</td> -->
+<td><a ui-sref="main.addeditcontact({id: c.id})">{{c.name}}</a></td>
             <td>{{c.emails[0]}}</td>
             <td>{{c.phones[0]}}</td>
             <td>{{bday(c)}}</td>

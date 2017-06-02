@@ -1,6 +1,6 @@
 var contactListController;
 
-contactListController = function($scope, contactService) {
+contactListController = function($scope, $state, contactService) {
 	$scope.contacts = [];
 	$scope.preDeletedContact = {};
 
@@ -27,21 +27,20 @@ contactListController = function($scope, contactService) {
 	};
 
 	$scope.deleteContact = function() {
-		console.log("vai excluir");
-		
-		if($scope.preDeletedContact != null) {
-			console.log("excluir: " + $scope.preDeletedContact);
-			
-			contactService.deleteContact($scope.preDeletedContact)
-				.then(function(response) {
-					
-				})
-				.finally(function() {
-					$scope.spinner = false;
-				});
-
-			// Chamar o servlet /contacts com um método 'DELETE' para deletar um contato do banco de dados passando um parâmetro de identificação.
+		if (!$scope.preDeletedContact) {
+			return;
 		}
+		
+		contactService.deleteContact($scope.preDeletedContact)
+			.then(function(response) {
+				$('#myModal').modal('hide');
+				$state.go("main.contacts", {}, {reload: "main.contacts"});
+			})
+			.finally(function() {
+				$scope.spinner = false;
+			});
+
+		// Chamar o servlet /contacts com um método 'DELETE' para deletar um contato do banco de dados passando um parâmetro de identificação.
 	};
 
 	$scope.bday = function(c) {
@@ -53,4 +52,4 @@ contactListController = function($scope, contactService) {
 	};
 };
 
-angular.module('avaliacandidatos').controller("contactListController", ["$scope", "contactService", contactListController]);
+angular.module('avaliacandidatos').controller("contactListController", ["$scope", "$state", "contactService", contactListController]);

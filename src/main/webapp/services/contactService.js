@@ -3,7 +3,7 @@
 angular.module("avaliacandidatos").service("contactService", contactService);
 
 function contactService($http, $q) {
-    function getContacts(city, lang) {
+    function getContacts() {
         var deferred = $q.defer();
 
         $http.get("/contacts")
@@ -16,9 +16,21 @@ function contactService($http, $q) {
         return deferred.promise;
     };
     
-    function insertUpdate(contact) {
+    function getContactById(id) {
+        var deferred = $q.defer();
+
+        $http.get("/contacts/" + id)
+            .then(function(response) {
+                deferred.resolve(response.data);
+            }, function(error) {
+                deferred.reject(error);
+            });
+
+        return deferred.promise;
+    };
+    
+    function insertContact(contact) {
     	var deferred = $q.defer();
-    	console.log("vai inserir");
     	
     	$http.post("/contacts", contact)
 	        .then(function(response) {
@@ -30,10 +42,23 @@ function contactService($http, $q) {
     	return deferred.promise;
     };
     
-    function insertUpdate(contact) {
+    function insertContact(contact) {
     	var deferred = $q.defer();
     	
     	$http.post("/contacts", contact)
+	        .then(function(response) {
+	            deferred.resolve(response.data);
+	        }, function(error) {
+	            deferred.reject(error);
+	        });
+
+    	return deferred.promise;
+    };
+    
+    function updateContact(contact) {
+    	var deferred = $q.defer();
+    	
+    	$http.put("/contacts/" + contact.id, contact)
 	        .then(function(response) {
 	            deferred.resolve(response.data);
 	        }, function(error) {
@@ -58,7 +83,9 @@ function contactService($http, $q) {
 
     return {
         "getContacts" : getContacts,
-        "insertUpdate" : insertUpdate,
-        "deleteContact" : deleteContact
+        "insertContact" : insertContact,
+        "deleteContact" : deleteContact,
+        "getContactById" : getContactById,
+        "updateContact" : updateContact
     }
 }
