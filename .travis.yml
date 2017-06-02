@@ -5,8 +5,8 @@ language: java
 notifications:
   email: false
 script:
-- sudo apt-get udpdate
-- sudo apt-get install libicu52
+#- sudo apt-get udpdate
+#- sudo apt-get install libicu52
 - mvn appengine:update
 #deploy:
 #  provider: gae
