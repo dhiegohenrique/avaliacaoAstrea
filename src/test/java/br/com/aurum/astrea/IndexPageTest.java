@@ -38,7 +38,9 @@ public class IndexPageTest {
 //		caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, driverPath);
 //		driver = new PhantomJSDriver(caps);
 		
-		PhantomJsDriverManager.getInstance().setup();
+//		PhantomJsDriverManager.getInstance().setup();
+		PhantomJsDriverManager.getInstance().setup("phantomjs-2.1.1");
+		
 //		PhantomJsDriverManager.getInstance().useTaobaoMirror().setup();
 //		driver = new PhantomJSDriver();
 //		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
