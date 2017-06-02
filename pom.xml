@@ -147,6 +147,7 @@
     <groupId>net.anthavio</groupId>
     <artifactId>phanbedder-1.9.8</artifactId>
     <version>1.0.0</version>
+    <scope>test</scope>
 </dependency>
 
 
