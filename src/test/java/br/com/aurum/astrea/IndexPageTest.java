@@ -1,6 +1,7 @@
 package br.com.aurum.astrea;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -48,7 +49,7 @@ public class IndexPageTest {
 		DesiredCapabilities dcaps = new DesiredCapabilities();
 		dcaps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjs.getAbsolutePath());
 		
-		PhantomJSDriver driver = new PhantomJSDriver(dcaps);
+		this.driver = new PhantomJSDriver(dcaps);
 		System.err.println("\n\nDRIVER: " + phantomjs.getAbsolutePath() + "\n\n");
 		
 		
@@ -71,7 +72,7 @@ public class IndexPageTest {
 		System.err.println("entrou no teste1");
 //		this.driver = new PhantomJSDriver();
 //		this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.MINUTES);
-//		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.MINUTES);
+		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.MINUTES);
 		System.err.println("entrou no teste2");
 	}
 	
