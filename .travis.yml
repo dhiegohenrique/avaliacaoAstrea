@@ -5,6 +5,7 @@ language: java
 notifications:
   email: false
 script:
+- sudo apt-get install build-essential g++ libexpat1-dev libfontconfig1-dev libfreetype6-dev libicu-dev libjpeg62-turbo-dev libpng12-dev libssl-dev zlib1g-dev
 #- sudo apt-get udpdate
 #- sudo apt-get install libicu52
 - mvn appengine:update
