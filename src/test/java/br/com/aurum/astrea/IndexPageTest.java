@@ -1,5 +1,7 @@
 package br.com.aurum.astrea;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,6 @@ public class IndexPageTest {
 	
 	private WebDriver driver;
 	
-//	private final String baseUrl = "http://www.google.com/";
 	private final String baseUrl = "http://www.google.com";
 //	private final static String baseUrl = "http://localhost";
 //	private static final String driverPath = "D:\\Arquivos de Programas\\phantomjs-2.1.1\\bin\\phantomjs.exe";
@@ -94,7 +95,7 @@ public class IndexPageTest {
 	@Test
 	public void verifyContactsLinkExists() {
 		System.err.println("entrou no teste3");
-//		this.driver.get(this.baseUrl);
+		this.driver.get(this.baseUrl);
 		System.err.println("entrou no teste4");
 //		this.driver.navigate().to(this.baseUrl);
 		
@@ -102,13 +103,12 @@ public class IndexPageTest {
 //		wait.until(ExpectedConditions.presenceOfElementLocated( By.name("btnK") )); 
 		System.err.println("entrou no teste5");
 		
-//		System.err.println("\n\nSOURCE:\n\n" + this.driver.getPageSource() + "\n\n");
+		System.err.println("\n\nSOURCE:\n\n" + this.driver.getPageSource() + "\n\n");
 //		
+		String title = "Google";
+		assertEquals(title, this.driver.getTitle());
+		
 //		WebElement webElement = this.driver.findElement(By.name("btnK"));
-//		assertTrue(webElement != null);
-		
-		
-//		WebElement webElement = driver.findElement(By.name("contatos"));
 //		assertTrue(webElement != null);
 	}
 }
