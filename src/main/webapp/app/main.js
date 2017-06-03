@@ -3,6 +3,8 @@ var app = angular.module('avaliacandidatos', [ 'ngRoute', 'ui.router',
 
 app.config([ '$urlRouterProvider', '$stateProvider',
 		function($urlRouterProvider, $stateProvider) {
+		console.log("COMECOU");
+	
 
 			$stateProvider.state('main', {
 				url : '/',
