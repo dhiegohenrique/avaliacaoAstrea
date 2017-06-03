@@ -10,12 +10,12 @@ contactListController = function($scope, $state, contactService) {
 	
 	$scope.listAllContacts = function() {
 		$scope.spinner = true;
-		$('#loadingModal').modal('show');
+//		$('#loadingModal').modal('show');
 		
 		contactService.getContacts()
 			.then(function(response) {
 				$scope.contacts = response;
-				$('#loadingModal').modal('hide');
+//				$('#loadingModal').modal('hide');
 			})
 			.finally(function() {
 				$scope.spinner = false;
