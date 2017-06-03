@@ -12,7 +12,6 @@
 	<div class="form-group">
 		<label for="firstname" class="col-sm-2 control-label">Nome</label>
 		<div class="col-sm-10">
-<!-- 			<input type="text" class="form-control" id="firstname" placeholder="Digite o nome" ng-model="contact.name" ng-class="{invalid: (contact.name=='' || contact.name==null) && submitted == true }"> -->
 			<input type="text" class="form-control" id="firstname" placeholder="Digite o nome" ng-model="contact.name" name="name" required>
 		
 			<div class="alert alert-danger"  ng-if="(formContact.name.$touched || formContact.$submitted) && formContact.name.$invalid">
@@ -114,7 +113,6 @@
 
 	<div class="actions">
 		<a class="cancel" ng-back>Cancelar</a>
-<!-- 		<button class="btn btn-default" ng-click="save()">Salvar</button> -->
-<button class="btn btn-default" type="submit">Salvar</button>
+		<button class="btn btn-default" type="submit">Salvar</button>
 	</div>
 </form>

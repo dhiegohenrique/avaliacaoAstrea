@@ -25,8 +25,6 @@ contactAddEditController = function($scope, $location, $stateParams, contactServ
 		
 		contactService.insertContact($scope.contact)
 			.then(function(response) {
-//				$state.go("main.contacts", {}, {reload: "main.contacts"});
-//				$location.path("/contacts");
 				$location.path("/contacts").replace();
 	        });
 	};
@@ -38,8 +36,6 @@ contactAddEditController = function($scope, $location, $stateParams, contactServ
 	function update() {
 		contactService.updateContact($scope.contact)
 			.then(function(response) {
-//	            $state.go("main.contacts", {}, {reload: "main.contacts"});
-//				$location.path("/contacts");
 				$location.path("/contacts").replace();
 	        });
 	};
