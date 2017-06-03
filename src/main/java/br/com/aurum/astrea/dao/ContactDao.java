@@ -2,6 +2,7 @@ package br.com.aurum.astrea.dao;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,7 @@ public class ContactDao {
 			throw new IllegalArgumentException("O nome do contato não foi informado.");
 		}
 		
+		contact.setDateTime(new Date());
 		ofy().save().entity(contact).now();
 	}
 	
@@ -33,7 +35,7 @@ public class ContactDao {
 	}
 	
 	public List<Contact> list() {
-		return ofy().load().type(Contact.class).list();
+		return ofy().load().type(Contact.class).order("dateTime").list();
 	}
 	
 	public Contact getContactById(Long id) {

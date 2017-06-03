@@ -1,14 +1,11 @@
 var contactAddEditController;
 
-contactAddEditController = function($scope, $state, $stateParams, contactService) {
+contactAddEditController = function($scope, $location, $stateParams, contactService) {
 	init();
 	
 	$scope.save = function() {
 		if ($scope.contact.name != null && $scope.contact.name != "") {
 			$scope.submitted = true;
-			$scope.spinner = true;
-			
-//			console.log("vai inserir: " + JSON.stringify($scope.contact));
 			
 			var id = $scope.contact.id;
 			if (id) {
@@ -16,31 +13,25 @@ contactAddEditController = function($scope, $state, $stateParams, contactService
 			} else {
 				insert();
 			}
-			// Chamar o servlet /contacts com um método 'POST' para salvar um contato no banco de dados.
 		}
 	};
 	
 	function insert() {
 		contactService.insertContact($scope.contact)
 			.then(function(response) {
-	            console.log("Resultado insert: " + JSON.stringify(response));
-	            $state.go("result");
-	            init();
+//				$state.go("main.contacts", {}, {reload: "main.contacts"});
+//				$location.path("/contacts");
+				$location.path("/contacts").replace();
 	        });
-	//        .finally(function(){
-	//            $scope.spinner = false;
-	//        });
 	};
 	
 	function update() {
 		contactService.updateContact($scope.contact)
 			.then(function(response) {
-	            $state.go("main.contacts", {}, {reload: "main.contacts"});
-//	            init();
+//	            $state.go("main.contacts", {}, {reload: "main.contacts"});
+//				$location.path("/contacts");
+				$location.path("/contacts").replace();
 	        });
-	//        .finally(function(){
-	//            $scope.spinner = false;
-	//        });
 	};
 
 	$scope.addMorePhones = function() {
@@ -93,4 +84,4 @@ contactAddEditController = function($scope, $state, $stateParams, contactService
 	}
 };
 
-angular.module('avaliacandidatos').controller("contactAddEditController", ["$scope", "$state", "$stateParams", "contactService", contactAddEditController]);
+angular.module('avaliacandidatos').controller("contactAddEditController", ["$scope", "$location", "$stateParams", "contactService", contactAddEditController]);

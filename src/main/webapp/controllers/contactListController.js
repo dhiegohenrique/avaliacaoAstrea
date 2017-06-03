@@ -1,27 +1,30 @@
 var contactListController;
 
-contactListController = function($scope, $state, contactService) {
+contactListController = function($scope, $location, contactService) {
 	$scope.contacts = [];
 	$scope.preDeletedContact = {};
 
-	$scope.init = function() {
-		$scope.listAllContacts();
-	};
+//	$scope.init = function() {
+//	$scope.listAllContacts();
+//	};
 	
-	$scope.listAllContacts = function() {
-		$scope.spinner = true;
-//		$('#loadingModal').modal('show');
+	init();
+	function init() {
+		console.log("vai carregar contatos");
 		
 		contactService.getContacts()
-			.then(function(response) {
-				$scope.contacts = response;
-//				$('#loadingModal').modal('hide');
-			})
-			.finally(function() {
-				$scope.spinner = false;
-			});
-		// Chamar o servlet /contacts com um método 'GET' para listar os contatos do banco de dados.
+		.then(function(response) {
+			$scope.contacts = response;
+			console.log("Carregou");
+		});
 	};
+	
+//	$scope.listAllContacts = function() {
+//		contactService.getContacts()
+//			.then(function(response) {
+//				$scope.contacts = response;
+//			});
+//	};
 
 	$scope.preDelete = function(contact) {
 		$scope.preDeletedContact = contact;
@@ -36,20 +39,26 @@ contactListController = function($scope, $state, contactService) {
 		contactService.deleteContact($scope.preDeletedContact)
 			.then(function(response) {
 				$('#myModal').modal('hide');
-//				$('#myModal').close();
-//				$('#myModal').hide();
-//				$state.go("main.contacts", {}, {reload: "main.contacts"});
+				
+				var index = $scope.contacts.indexOf($scope.preDeletedContact);
+				$scope.contacts.splice(index, 1);
 				
 				$('#myModal').on('hidden.bs.modal', function () {
-					console.log("FECHOU A MODAL");
-					$state.go("main.contacts", {}, {reload: "main.contacts"});
+//					$state.go("main.contacts", {}, {reload: "main.contacts"});
+//					$state.go("main.contacts", {}, {reload: true});
+//					$location.path("/contacts").replace();
+//					console.log("fechou modal");
+//					$('.modal-backdrop').remove();
+//					$location.path("/contacts");
+//					var index = $scope.contacts.indexOf($scope.preDeletedContact);
+//					console.log("index: " + index);
+//					
+//					console.log("tamanho1: " + $scope.contacts.length);
+//					$scope.contacts.splice(index, 1);
+//					console.log("tamanho2: " + $scope.contacts.length);
+//					$scope.$apply();
 				})
-			})
-			.finally(function() {
-				$scope.spinner = false;
 			});
-
-		// Chamar o servlet /contacts com um método 'DELETE' para deletar um contato do banco de dados passando um parâmetro de identificação.
 	};
 
 	$scope.bday = function(c) {
@@ -61,4 +70,4 @@ contactListController = function($scope, $state, contactService) {
 	};
 };
 
-angular.module('avaliacandidatos').controller("contactListController", ["$scope", "$state", "contactService", contactListController]);
+angular.module('avaliacandidatos').controller("contactListController", ["$scope", "$location", "contactService", contactListController]);
