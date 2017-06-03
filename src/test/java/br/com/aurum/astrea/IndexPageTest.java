@@ -14,6 +14,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
 
@@ -93,10 +94,10 @@ public class IndexPageTest {
 		this.driver.get(this.baseUrl);
 //		this.driver.navigate().to(this.baseUrl);
 		
-//		WebDriverWait wait = new WebDriverWait(this.driver, 10);  // 10 secs max wait
-//		wait.until(ExpectedConditions.presenceOfElementLocated( By.name("btnK") )); 
+		WebDriverWait wait = new WebDriverWait(this.driver, 10);  // 10 secs max wait
+//		wait.until(ExpectedConditions.presenceOfElementLocated( By.name("teste") )); 
 		
-//		System.err.println("\n\nSOURCE:\n\n" + this.driver.getPageSource() + "\n\n");
+		System.err.println("\n\nSOURCE:\n\n" + this.driver.getPageSource() + "\n\n");
 //		
 		String title = "Avalia Candidatos";
 		assertEquals(title, this.driver.getTitle());
