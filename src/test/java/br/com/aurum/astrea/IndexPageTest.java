@@ -20,8 +20,8 @@ public class IndexPageTest {
 	
 	private WebDriver driver;
 	
-	private final String baseUrl = "http://www.google.com";
-//	private final String baseUrl = "http://localhost:3001";
+//	private final String baseUrl = "http://www.google.com";
+	private final String baseUrl = "http://localhost:8080";
 //	private static final String driverPath = "D:\\Arquivos de Programas\\phantomjs-2.1.1\\bin\\phantomjs.exe";
 	
 	@BeforeClass
