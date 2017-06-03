@@ -2,7 +2,6 @@ package br.com.aurum.astrea;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -17,14 +16,13 @@ import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
-import net.anthavio.phanbedder.Phanbedder;
 
 public class IndexPageTest {
 	
 	private WebDriver driver;
 	
-	private final String baseUrl = "http://www.google.com";
-//	private final static String baseUrl = "http://localhost";
+//	private final String baseUrl = "http://www.google.com";
+	private final String baseUrl = "http://localhost:3001";
 //	private static final String driverPath = "D:\\Arquivos de Programas\\phantomjs-2.1.1\\bin\\phantomjs.exe";
 	
 	@BeforeClass
@@ -51,13 +49,13 @@ public class IndexPageTest {
 	
 	@Before
 	public void setUp() {
-		File phantomjs = Phanbedder.unpack(); //Phanbedder to the rescue!
+//		File phantomjs = Phanbedder.unpack(); //Phanbedder to the rescue!
 //		DesiredCapabilities dcaps = new DesiredCapabilities();
 //		dcaps.setJavascriptEnabled(true);   
 //		dcaps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, phantomjs.getAbsolutePath());
 //		
 //		this.driver = new PhantomJSDriver(dcaps);
-		System.err.println("\n\nDRIVER: " + phantomjs.getAbsolutePath() + "\n\n");
+//		System.err.println("\n\nDRIVER: " + phantomjs.getAbsolutePath() + "\n\n");
 		
 		
 		List<String> cliArgsCap = new ArrayList<String>();
@@ -78,11 +76,9 @@ public class IndexPageTest {
 //		this.driver = new PhantomJSDriver(capabilities);
 	
 //		
-		System.err.println("entrou no teste1");
 		this.driver = new PhantomJSDriver();
 //		this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.MINUTES);
 		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.MINUTES);
-		System.err.println("entrou no teste2");
 	}
 	
 	@After
@@ -93,22 +89,19 @@ public class IndexPageTest {
 	}
 	
 	@Test
-	public void verifyContactsLinkExists() {
-		System.err.println("entrou no teste3");
+	public void checksIfIndexPageHasLoaded() {
 		this.driver.get(this.baseUrl);
-		System.err.println("entrou no teste4");
 //		this.driver.navigate().to(this.baseUrl);
 		
 //		WebDriverWait wait = new WebDriverWait(this.driver, 10);  // 10 secs max wait
 //		wait.until(ExpectedConditions.presenceOfElementLocated( By.name("btnK") )); 
-		System.err.println("entrou no teste5");
 		
-		System.err.println("\n\nSOURCE:\n\n" + this.driver.getPageSource() + "\n\n");
+//		System.err.println("\n\nSOURCE:\n\n" + this.driver.getPageSource() + "\n\n");
 //		
-		String title = "Google";
+		String title = "Avalia Candidatos";
 		assertEquals(title, this.driver.getTitle());
 		
-//		WebElement webElement = this.driver.findElement(By.name("btnK"));
+//		WebElement webElement = this.driver.findElement(By.name("contatos"));
 //		assertTrue(webElement != null);
 	}
 }

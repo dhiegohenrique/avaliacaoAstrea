@@ -69,9 +69,11 @@ contactAddEditController = function($scope, $location, $stateParams, contactServ
 		$scope.submitted = false;
 		$scope.sucess = false;
 		$scope.spinner = false;
+		$scope.title = "Adicionar contato";
 		
 		var id = $stateParams.id;
 		if (id) {
+			$scope.title = "Editar contato";
 			fillInContact(id);
 		}
 	};
