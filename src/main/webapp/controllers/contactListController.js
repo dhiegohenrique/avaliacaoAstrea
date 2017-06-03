@@ -10,12 +10,9 @@ contactListController = function($scope, $location, contactService) {
 	
 	init();
 	function init() {
-		console.log("vai carregar contatos");
-		
 		contactService.getContacts()
 		.then(function(response) {
 			$scope.contacts = response;
-			console.log("Carregou");
 		});
 	};
 	

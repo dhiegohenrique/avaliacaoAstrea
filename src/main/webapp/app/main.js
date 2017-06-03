@@ -1,9 +1,8 @@
 var app = angular.module('avaliacandidatos', [ 'ngRoute', 'ui.router',
-		'ui.bootstrap' ]);
+		'ui.bootstrap', 'ui.utils.masks','brasil.filters' ]);
 
 app.config([ '$urlRouterProvider', '$stateProvider',
 		function($urlRouterProvider, $stateProvider) {
-		console.log("COMECOU");
 	
 
 			$stateProvider.state('main', {

@@ -17,6 +17,7 @@
         <thead>
           <tr>
             <th>Nome</th>
+            <th>CPF</th>
             <th>Email</th>
             <th>Telefone</th>
             <th>Nascimento</th>
@@ -30,8 +31,9 @@
 <!--             <td><a href="/addeditcontact/" + {{c.id}}>{{c.name}}</a></td> -->
 <!-- 			<td ui-sref="main.addeditcontact({id: c.id})">{{c.name}}</td> -->
 <td><a ui-sref="main.addeditcontact({id: c.id})">{{c.name}}</a></td>
+			<td>{{c.cpf | cpf}}</td>
             <td>{{c.emails[0]}}</td>
-            <td>{{c.phones[0]}}</td>
+            <td>{{c.phones[0] | tel}}</td>
             <td>{{bday(c)}}</td>
             <td> <i class="fa fa-trash-o icon-box" ng-click="preDelete(c)"></i> <td>    
           </tr>

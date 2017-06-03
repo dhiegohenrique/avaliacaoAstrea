@@ -1,4 +1,4 @@
-<form class="form-horizontal" ng-controller="contactAddEditController" ng-model="contact">
+<form class="form-horizontal" ng-controller="contactAddEditController" ng-model="contact" name="formContact" novalidate ng-submit="save()">
 
 	<div class="app-page-header">
 		<div class="page-title">
@@ -10,40 +10,45 @@
 	<legend></legend>
 
 	<div class="form-group">
-		<label for="firstname" class="col-sm-2 control-label" >Nome</label>
+		<label for="firstname" class="col-sm-2 control-label">Nome</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" id="firstname" placeholder="Digite o nome" ng-model="contact.name" ng-class="{invalid: (contact.name=='' || contact.name==null) && submitted == true }">
+<!-- 			<input type="text" class="form-control" id="firstname" placeholder="Digite o nome" ng-model="contact.name" ng-class="{invalid: (contact.name=='' || contact.name==null) && submitted == true }"> -->
+			<input type="text" class="form-control" id="firstname" placeholder="Digite o nome" ng-model="contact.name" name="name" required>
+		
+			<div class="alert alert-danger"  ng-if="(formContact.name.$touched || formContact.$submitted) && formContact.name.$invalid">
+				<span ng-if="formContact.name.$error.required">Digite o nome.</span>
+            </div>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="lastname" class="col-sm-2 control-label">Nascimento</label>
 		<div class="col-sm-2">
-			<input type="text" class="form-control" id="lastname"
-				placeholder="Dia" ng-model="contact.birthDay" number-only>
+			<input type="text" class="form-control" name="birthDay"
+				placeholder="Dia" ng-model="contact.birthDay" maxlength="2" id="day" ng-blur="validateDay()" ui-number-mask="0">
 		</div>
 
 		<div class="col-sm-2">
-			<input type="text" class="form-control" id="lastname"
-				placeholder="Mes" ng-model="contact.birthMonth">
+			<input type="text" class="form-control"
+				placeholder="Mes" ng-model="contact.birthMonth" maxlength="2" id="month" ng-blur="validateMonth()" ui-number-mask="0">
 		</div>
 
 		<div class="col-sm-2">
-			<input type="text" class="form-control" id="lastname"
-				placeholder="Ano" ng-model="contact.birthYear">
+			<input type="text" class="form-control"
+				placeholder="Ano" ng-model="contact.birthYear" maxlength="4" id="year" ng-blur="validateYear()" ui-number-mask="0" ui-hide-group-sep>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="lastname" class="col-sm-2 control-label">CPF</label>
 		<div class="col-sm-4">
-			<input type="text" class="form-control" id="lastname"
-				placeholder="Digite o cpf" ng-model="contact.cpf">
+			<input type="text" class="form-control" id="cpf" placeholder="Digite o cpf" 
+				ng-model="contact.cpf" ng-blur="validateCpf()" ui-br-cpf-mask>
 		</div>
 
 		<label for="lastname" class="col-sm-1 control-label">RG</label>
 		<div class="col-sm-4">
-			<input type="text" class="form-control" id="lastname"
+			<input type="text" class="form-control" id="rg"
 				placeholder="Digite o rg" ng-model="contact.rg">
 		</div>
 	</div>
@@ -53,7 +58,7 @@
 		<div class="col-sm-6">
 			<div ng-repeat='p in contact.phones track by $index' class="input-group repeater">
 				<input type="text" class="form-control" placeholder="Digite o telefone" ng-model='contact.phones[$index]'
-					>
+					ui-br-phone-number id="phone{{$index}}" ng-blur="validatePhone($event)">
 				<span class="input-group-btn">
         			<button class="btn mybtn" type="button" ng-click='deletePhone($index)'><span class="glyphicon glyphicon-remove "></span></button>
         		</span>
@@ -63,13 +68,25 @@
 	</div>
 
 	<div class="form-group">
-		<label for="lastname" class="col-sm-2 control-label">Email</label>
+		<label class="col-sm-2 control-label">Email</label>
 		<div class="col-sm-6" >
 			<div ng-repeat='email in contact.emails track by $index' class="input-group repeater">
-				<input type="text" class="form-control" id="lastname" placeholder="Digite o email"  ng-model='contact.emails[$index]'>
-				<span class="input-group-btn">
-        			<button class="btn mybtn" type="button" ng-click='deleteEmail($index)'><span class="glyphicon glyphicon-remove "></span></button>
-      			</span>
+				<div class="row">
+					<div class="col-sm-11" style="padding-right: 0px;">
+						<input type="email" class="form-control" id="email{{$index}}" placeholder="Digite o email" ng-model='contact.emails[$index]'
+							ng-blur="validateEmail($event)">
+					</div>
+					
+					<div class="col-sm-1" style="padding-left: 0px;">
+						<span class="input-group-btn">
+		        			<button class="btn mybtn" type="button" ng-click='deleteEmail($index)'><span class="glyphicon glyphicon-remove "></span></button>
+		      			</span>
+	      			</div>
+      			</div>
+      			
+      			<div class="alert alert-danger" id="alertEmail{{$index}}" style="display: none;">
+					<span>Digite o email no formato: teste@hotmail.com</span>
+            	</div>
 			</div>
 		</div>
 		<a ng-click="addMoreEmails()"> Adicionar mais </a>
@@ -80,7 +97,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="textarea">Endereço</label>
 		<div class="col-sm-6">                     
-			<textarea id="textarea" name="textarea" class="form-control" rows="3" placeholder="Digite o endereço" ng-model="contact.address"></textarea>
+			<textarea id="endereco" name="textarea" class="form-control" rows="3" placeholder="Digite o endereço" ng-model="contact.address"></textarea>
 		</div>
 	</div>
 
@@ -89,7 +106,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label" for="textarea">Observações</label>
 		<div class="col-sm-6">                     
-			<textarea id="textarea" name="textarea" class="form-control" rows="3" placeholder="Digite sua observacão" ng-model="contact.observation"></textarea>
+			<textarea id="observacoes" name="textarea" class="form-control" rows="3" placeholder="Digite sua observacão" ng-model="contact.observation"></textarea>
 		</div>
 	</div>
 
@@ -97,6 +114,7 @@
 
 	<div class="actions">
 		<a class="cancel" ng-back>Cancelar</a>
-		<button class="btn btn-default" ng-click="save()">Salvar</button>
+<!-- 		<button class="btn btn-default" ng-click="save()">Salvar</button> -->
+<button class="btn btn-default" type="submit">Salvar</button>
 	</div>
 </form>

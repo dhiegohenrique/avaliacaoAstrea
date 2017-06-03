@@ -11,3 +11,12 @@
     -o-border-radius: 10px; /** older opera browsers **/
     border-radius: 10px; /** all modern browsers, including IE9+, but see below **/
 }
+
+input.ng-touched.ng-invalid{
+	border-color: #dca7a7;
+}
+
+.alert-danger {
+    margin-top: 10px !important;
+    margin-bottom: 0px !important;
+}

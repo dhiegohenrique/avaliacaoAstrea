@@ -23,3 +23,8 @@ src/main/webapp/WEB-INF/helloworld-v1.api
 eclipse-launch-profiles/DevAppServer.launch
 
 eclipse-launch-profiles/UpdateApplication.launch
+node_modules/
+src/main/webapp/vendor/
+dist/
+package.json
+gulpfile.js

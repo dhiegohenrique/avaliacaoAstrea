@@ -1,22 +1,28 @@
 var contactAddEditController;
 
 contactAddEditController = function($scope, $location, $stateParams, contactService) {
+	var invalidEmails = [];
 	init();
 	
 	$scope.save = function() {
-		if ($scope.contact.name != null && $scope.contact.name != "") {
-			$scope.submitted = true;
-			
-			var id = $scope.contact.id;
-			if (id) {
-				update();
-			} else {
-				insert();
-			}
+		$scope.formContact.$setDirty();
+		
+		if ($scope.formContact.$invalid || invalidEmails.length > 0) {
+			return;
+		}
+		
+		var id = $scope.contact.id;
+		if (id) {
+			update();
+		} else {
+			insert();
 		}
 	};
 	
 	function insert() {
+		$scope.contact.phones = removeEmptyElements($scope.contact.phones);
+		$scope.contact.emails = removeEmptyElements($scope.contact.emails);
+		
 		contactService.insertContact($scope.contact)
 			.then(function(response) {
 //				$state.go("main.contacts", {}, {reload: "main.contacts"});
@@ -24,6 +30,10 @@ contactAddEditController = function($scope, $location, $stateParams, contactServ
 				$location.path("/contacts").replace();
 	        });
 	};
+	
+	function removeEmptyElements(arr) {
+		return arr.filter(Number); 
+	}
 	
 	function update() {
 		contactService.updateContact($scope.contact)
@@ -36,7 +46,7 @@ contactAddEditController = function($scope, $location, $stateParams, contactServ
 
 	$scope.addMorePhones = function() {
 		$scope.contact.phones.push('');
-	}; 
+	};
 
 	$scope.addMoreEmails = function() {
 		$scope.contact.emails.push('');
@@ -66,15 +76,17 @@ contactAddEditController = function($scope, $location, $stateParams, contactServ
 		$scope.contact = {};
 		$scope.contact.emails = [''];
 		$scope.contact.phones = [''];
-		$scope.submitted = false;
 		$scope.sucess = false;
 		$scope.spinner = false;
 		$scope.title = "Adicionar contato";
+		$scope.isEmailValid = true;
 		
 		var id = $stateParams.id;
 		if (id) {
 			$scope.title = "Editar contato";
 			fillInContact(id);
+		} else {
+			$("#firstname").focus();
 		}
 	};
 	
@@ -83,6 +95,75 @@ contactAddEditController = function($scope, $location, $stateParams, contactServ
 			.then(function(response) {
 	            $scope.contact = response;
 	        });
+	}
+	
+	$scope.validateCpf = function() {
+		var cpf = $("#cpf").val();
+		cpf = cpf.replace(/[^\d]+/g,'');
+		if (cpf.length < 11) {
+			$("#cpf").val("");
+		}
+	};
+	
+	$scope.validatePhone = function($event) {
+		var id = $event.target.id;
+		var phone = $("#" + id).val();
+		phone = phone.replace(/[^\d]+/g,'');
+		if (phone.length < 10) {
+			$("#" + id).val("");
+		}
+	};
+	
+	$scope.validateDay = function() {
+		var day = $("#day").val();
+		day = parseInt(day);
+		if (day < 1 || day > 31) {
+			$("#day").val("");
+		}
+	};
+	
+	$scope.validateMonth = function() {
+		var month = $("#month").val();
+		month = parseInt(month);
+		if (month < 1 || month > 12) {
+			$("#month").val("");
+		}
+	};
+	
+	$scope.validateYear = function() {
+		var year = $("#year").val();
+		if (year.length < 4) {
+			$("#year").val("");
+		}
+	};
+	
+	$scope.validateEmail = function($event) {
+		var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		
+		var id = $event.target.id;
+		var email = $("#" + id).val();
+		var emailId = parseInt(id.replace("email", ""));
+		var index = invalidEmails.indexOf(emailId);
+		
+		if (email.length === 0) {
+			$("#alertEmail" + emailId).hide();
+			return;
+		}
+		
+		if (!regex.test(email)) {
+			if (index < 0) {
+				invalidEmails.push(emailId);
+			}
+			
+			$("#alertEmail" + emailId).show();
+			return;
+		}
+		
+		if (index >= 0) {
+			invalidEmails.splice(index, 1);
+		}
+		
+		$("#alertEmail" + emailId).hide();
 	}
 };
 
