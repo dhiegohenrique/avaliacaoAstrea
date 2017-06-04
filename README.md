@@ -10,4 +10,4 @@ mvn test
 Para rodar a aplicação:
 mvn appengine:devserver
 
-A cada commit, serão realizados testes unitários no Travis, se passarem, o deploy será realizado em http://1-dot-avaliacaoastrea.appspot.com
+A cada commit, serão realizados testes unitários no Travis. Se passarem, o deploy será realizado em http://1-dot-avaliacaoastrea.appspot.com
