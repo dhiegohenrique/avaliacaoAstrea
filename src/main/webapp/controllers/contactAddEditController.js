@@ -7,7 +7,7 @@ contactAddEditController = function($scope, $location, $stateParams, contactServ
 	$scope.save = function() {
 		$scope.formContact.$setDirty();
 		
-		if ($scope.formContact.$invalid || invalidEmails.length > 0) {
+		if ($scope.formContact.$invalid || invalidEmails.length > 0 || $scope.isCpfInvalid) {
 			return;
 		}
 		
@@ -30,7 +30,7 @@ contactAddEditController = function($scope, $location, $stateParams, contactServ
 	};
 	
 	function removeEmptyElements(arr) {
-		return arr.filter(Number); 
+		return arr.filter(Boolean);
 	}
 	
 	function update() {
@@ -75,7 +75,7 @@ contactAddEditController = function($scope, $location, $stateParams, contactServ
 		$scope.sucess = false;
 		$scope.spinner = false;
 		$scope.title = "Adicionar contato";
-		$scope.isEmailValid = true;
+		$scope.isCpfInvalid = false;
 		
 		var id = $stateParams.id;
 		if (id) {
@@ -90,14 +90,34 @@ contactAddEditController = function($scope, $location, $stateParams, contactServ
 		contactService.getContactById(id)
 			.then(function(response) {
 	            $scope.contact = response;
+	            $scope.contact.emails = initArrayIfEmpty($scope.contact.emails);
+	            $scope.contact.phones = initArrayIfEmpty($scope.contact.phones);
 	        });
+	}
+	
+	function initArrayIfEmpty(array) {
+		if (array && array.length >= 0) {
+			return array;
+		}
+		
+		return [''];
 	}
 	
 	$scope.validateCpf = function() {
 		var cpf = $("#cpf").val();
 		cpf = cpf.replace(/[^\d]+/g,'');
-		if (cpf.length < 11) {
+		$scope.isCpfInvalid = false;
+		
+		if (cpf.length >= 11) {
+			$scope.isCpfInvalid = $("#cpf").hasClass("ng-invalid-cpf");
+		} else {
 			$("#cpf").val("");
+		}
+		
+		if ($scope.isCpfInvalid) {
+			$("#cpf").addClass("ng-invalid");
+		} else {
+			$("#cpf").removeClass("ng-invalid");
 		}
 	};
 	

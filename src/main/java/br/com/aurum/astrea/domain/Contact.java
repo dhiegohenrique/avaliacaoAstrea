@@ -15,12 +15,17 @@ public class Contact {
 	
 	@Index
 	private String name;
+	
+	@Index
+	private String filterName;
 
 	private String birthDay;
 	private String birthMonth;
 	private String birthYear;
 
+	@Index
 	private String cpf;
+	
 	private String rg;
 
 	private List<String> phones;
@@ -123,5 +128,13 @@ public class Contact {
 
 	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
+	}
+
+	public String getFilterName() {
+		return this.filterName;
+	}
+
+	public void setFilterName(String filterName) {
+		this.filterName = filterName;
 	}
 }

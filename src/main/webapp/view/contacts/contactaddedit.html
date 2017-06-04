@@ -41,8 +41,12 @@
 	<div class="form-group">
 		<label for="lastname" class="col-sm-2 control-label">CPF</label>
 		<div class="col-sm-4">
-			<input type="text" class="form-control" id="cpf" placeholder="Digite o cpf" 
+			<input type="text" class="form-control" id="cpf" name="cpf" placeholder="Digite o cpf" 
 				ng-model="contact.cpf" ng-blur="validateCpf()" ui-br-cpf-mask>
+				
+			<div class="alert alert-danger" ng-if="isCpfInvalid">
+				<span>CPF inválido.</span>
+            </div>
 		</div>
 
 		<label for="lastname" class="col-sm-1 control-label">RG</label>
