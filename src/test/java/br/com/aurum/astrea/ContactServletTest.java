@@ -69,7 +69,7 @@ public class ContactServletTest {
 	
 	@Test
 	public void shouldBeReturnAllContacts() throws IOException {
-		List<Contact> listInsertContacts = this.insertContacts();
+		List<Contact> listInsertContacts = this.insertListContacts();
 
 		StringWriter stringWriter = new StringWriter();
 		when(this.resp.getWriter()).thenReturn(new PrintWriter(stringWriter));
@@ -91,8 +91,7 @@ public class ContactServletTest {
 	
 	@Test
 	public void sholdBeReturnContactById() throws IOException {
-		List<Contact> listInsertContacts = this.insertContacts();
-		Contact contact = listInsertContacts.get(0);
+		Contact contact = this.insertContact();
 		
 		StringWriter stringWriter = new StringWriter();
 		when(this.req.getRequestURI()).thenReturn("contacts/" + contact.getId());
@@ -184,7 +183,7 @@ public class ContactServletTest {
 	
 	@Test
 	public void shouldBeReturnStatus500WhenEditingAnUninformedContact() throws IOException, ServletException {
-		List<Contact> listInsertContacts = this.insertContacts();
+		List<Contact> listInsertContacts = this.insertListContacts();
 		when(this.req.getRequestURI()).thenReturn("contacts/" + listInsertContacts.get(0).getId());
 		
 		BufferedReader bufferedReader = new BufferedReader(new StringReader(""));
@@ -200,8 +199,7 @@ public class ContactServletTest {
 	
 	@Test
 	public void shouldBeReturnStatus204WhenEditingAContact() throws IOException, ServletException {
-		List<Contact> listInsertContacts = this.insertContacts();
-		Contact contact = listInsertContacts.get(0);
+		Contact contact = this.insertContact();
 		
 		BufferedReader bufferedReader = new BufferedReader(new StringReader(this.gson.toJson(contact)));
 		
@@ -241,8 +239,7 @@ public class ContactServletTest {
 	
 	@Test
 	public void shouldBeReturnStatus204WhenDeletingAContact() throws IOException, ServletException {
-		List<Contact> listInsertContacts = this.insertContacts();
-		Contact contact = listInsertContacts.get(0);
+		Contact contact = this.insertContact();
 		
 		BufferedReader bufferedReader = new BufferedReader(new StringReader(this.gson.toJson(contact)));
 		
@@ -256,12 +253,118 @@ public class ContactServletTest {
 		assertEquals(HttpServletResponse.SC_NO_CONTENT, intArg.getValue().intValue());
 	}
 	
+	@Test
+	public void shouldBeReturnContactByName() throws IOException {
+		Contact contact = this.insertContact();
+
+		StringWriter stringWriter = new StringWriter();
+		when(this.req.getRequestURI()).thenReturn("contacts?name=" + contact.getName());
+		when(this.resp.getWriter()).thenReturn(new PrintWriter(stringWriter));
+
+		this.contactServlet.doGet(this.req, this.resp);
+
+		String stringResponse = stringWriter.toString();
+		List<Contact> listContacts = this.getListContacts(stringResponse);
+		
+		for (Contact contactReturn : listContacts) {
+			assertEquals(contact.getName(), contactReturn.getName());
+		}
+	}
+	
+	@Test
+	public void shouldBeReturnStatus500WhenRecoveringContactByEmptyName() throws IOException, ServletException {
+		Contact contact = this.insertContact();
+		
+		BufferedReader bufferedReader = new BufferedReader(new StringReader(this.gson.toJson(contact)));
+		
+		when(this.req.getRequestURI()).thenReturn("contacts?name=");
+		when(this.req.getReader()).thenReturn(bufferedReader);
+		
+		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
+		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
+
+		this.contactServlet.doDelete(this.req, this.resp);
+		assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, intArg.getValue().intValue());
+	}
+	
+	@Test
+	public void shouldBeReturnContactByCpf() throws IOException {
+		Contact contact = this.insertContact();
+
+		StringWriter stringWriter = new StringWriter();
+		when(this.req.getRequestURI()).thenReturn("contacts?cpf=" + contact.getCpf());
+		when(this.resp.getWriter()).thenReturn(new PrintWriter(stringWriter));
+
+		this.contactServlet.doGet(this.req, this.resp);
+
+		String stringResponse = stringWriter.toString();
+		List<Contact> listContacts = this.getListContacts(stringResponse);
+		
+		for (Contact contactReturn : listContacts) {
+			assertEquals(contact.getCpf(), contactReturn.getCpf());
+		}
+	}
+
+	@Test
+	public void shouldBeReturnStatus500WhenRecoveringContactByEmptyCpf() throws IOException, ServletException {
+		Contact contact = this.insertContact();
+		
+		BufferedReader bufferedReader = new BufferedReader(new StringReader(this.gson.toJson(contact)));
+		
+		when(this.req.getRequestURI()).thenReturn("contacts?cpf=");
+		when(this.req.getReader()).thenReturn(bufferedReader);
+		
+		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
+		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
+
+		this.contactServlet.doDelete(this.req, this.resp);
+		assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, intArg.getValue().intValue());
+	}
+	
+	@Test
+	public void shouldBeReturnStatus500WhenRecoveringContactByInvalidCpf() throws IOException, ServletException {
+		Contact contact = this.insertContact();
+		
+		BufferedReader bufferedReader = new BufferedReader(new StringReader(this.gson.toJson(contact)));
+		
+		when(this.req.getRequestURI()).thenReturn("contacts?cpf=11111111111");
+		when(this.req.getReader()).thenReturn(bufferedReader);
+		
+		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
+		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
+
+		this.contactServlet.doDelete(this.req, this.resp);
+		assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, intArg.getValue().intValue());
+	}
+	
+	@Test
+	public void shouldBeReturnContactByNameAndCpf() throws IOException {
+		Contact contact = this.insertContact();
+
+		StringWriter stringWriter = new StringWriter();
+		when(this.req.getRequestURI()).thenReturn("contacts?name=" + contact.getName() + "&cpf=" + contact.getCpf());
+		when(this.resp.getWriter()).thenReturn(new PrintWriter(stringWriter));
+
+		this.contactServlet.doGet(this.req, this.resp);
+
+		String stringResponse = stringWriter.toString();
+		List<Contact> listContacts = this.getListContacts(stringResponse);
+		
+		for (Contact contactReturn : listContacts) {
+			assertEquals(contact.getName(), contactReturn.getName());
+			assertEquals(contact.getCpf(), contactReturn.getCpf());
+		}
+	}
+	
 	private List<Contact> getListContacts(String stringResponse) {
 		Contact[] arrayContacts = this.gson.fromJson(stringResponse, Contact[].class);
 		return Arrays.asList(arrayContacts);
 	}
 	
-	private List<Contact> insertContacts() {
+	private List<Contact> insertListContacts() {
 		List<Contact> listContacts = new ArrayList<>();
 		for (int index = 0; index < 5; index++) {
 			listContacts.add(this.getContact(index));
@@ -274,6 +377,15 @@ public class ContactServletTest {
 	private Contact getContact(int index) {
 		Contact contact = new Contact();
 		contact.setName("Contato" + index);
+		return contact;
+	}
+
+	private Contact insertContact() {
+		Contact contact = new Contact();
+		contact.setName("Maria");
+		contact.setCpf("88461676009");
+		
+		ObjectifyService.ofy().save().entity(contact).now();
 		return contact;
 	}
 }

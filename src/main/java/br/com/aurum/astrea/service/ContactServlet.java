@@ -21,6 +21,7 @@ import com.google.gson.JsonObject;
 
 import br.com.aurum.astrea.dao.ContactDao;
 import br.com.aurum.astrea.domain.Contact;
+import br.com.aurum.astrea.utils.CPFUtils;
 
 @SuppressWarnings("serial")
 public class ContactServlet extends HttpServlet {
@@ -38,11 +39,11 @@ public class ContactServlet extends HttpServlet {
 			return;
 		}
 
-		resp.setStatus(HttpServletResponse.SC_CREATED);
-		
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("id", contact.getId());
 		this.writeJSON(resp, jsonObject);
+		
+		resp.setStatus(HttpServletResponse.SC_CREATED);
 	}
 	
 	private void writeJSON(HttpServletResponse resp, JsonObject jsonObject) throws IOException {
@@ -92,6 +93,10 @@ public class ContactServlet extends HttpServlet {
 	@SuppressWarnings("rawtypes")
 	private boolean hasParameters(HttpServletRequest req) {
 		Enumeration parameterNames = req.getParameterNames();
+		if (parameterNames == null) {
+			return false;
+		}
+		
 		return parameterNames.hasMoreElements();
 	}
 	
@@ -116,7 +121,7 @@ public class ContactServlet extends HttpServlet {
 				
 				contactField.setName(paramName);
 				contactField.setFilterOperator(FilterOperator.EQUAL);
-				contactField.setValue(this.normalizeCpf(cpf));
+				contactField.setValue(CPFUtils.normalizeCpf(cpf));
 			} else {
 				String name = req.getParameterValues(paramName)[0];
 				if (!this.validateName(name, resp)) {
@@ -140,18 +145,12 @@ public class ContactServlet extends HttpServlet {
 			return false;
 		}
 		
-		cpf = this.normalizeCpf(cpf);
-		if (cpf.length() != 11) {
+		if (!CPFUtils.isValidCPF(cpf)) {
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "O cpf informado não é válido.");
 			return false;
 		}
 		
 		return true;
-	}
-	
-	private String normalizeCpf(String cpf) {
-		String normalizeCpf = cpf;
-		return normalizeCpf.replaceAll("[^0-9]", "");
 	}
 	
 	private boolean validateName(String name, HttpServletResponse resp) throws IOException {
@@ -166,6 +165,11 @@ public class ContactServlet extends HttpServlet {
 	private void doGetByParameters(List<ContactField> listContactFields, HttpServletResponse resp) throws IOException {
 		resp.setStatus(HttpServletResponse.SC_OK);
 		List<Contact> listContacts = DAO.getContactsByFields(listContactFields);
+		if (listContacts == null || listContactFields.isEmpty()) {
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Contato(s) não encontrado(s).");
+			return;
+		}
+		
 		this.writeJSON(resp, listContacts);
 	}
 
