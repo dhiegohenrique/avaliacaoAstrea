@@ -21,6 +21,7 @@ import com.google.gson.JsonObject;
 
 import br.com.aurum.astrea.dao.ContactDao;
 import br.com.aurum.astrea.domain.Contact;
+import br.com.aurum.astrea.service.ContactField.Field;
 import br.com.aurum.astrea.utils.CPFUtils;
 
 @SuppressWarnings("serial")
@@ -107,65 +108,114 @@ public class ContactServlet extends HttpServlet {
 		
 		while (parameterNames.hasMoreElements()) {
 			String paramName = parameterNames.nextElement();
-			if (!(paramName.equals("cpf") || paramName.equals("name"))) {
+			Field field = Field.getFieldByParamName(paramName);
+			if (field == null) {
 				continue;
 			}
 			
-			ContactField contactField = new ContactField();
-
-			if (paramName.equals("cpf")) {
-				String cpf = req.getParameterValues(paramName)[0];
-				if (!this.validateCpf(cpf, resp)) {
-					return;
-				}
-				
-				contactField.setName(paramName);
-				contactField.setFilterOperator(FilterOperator.EQUAL);
-				contactField.setValue(CPFUtils.normalizeCpf(cpf));
-			} else {
-				String name = req.getParameterValues(paramName)[0];
-				if (!this.validateName(name, resp)) {
-					return;
-				}
-				
-				contactField.setName("filterName");
-				contactField.setFilterOperator(FilterOperator.EQUAL);
-				contactField.setValue(name);
+			ContactField contactField = null;
+			
+			switch (paramName) {
+				case "cpf":
+					String cpf = req.getParameterValues(paramName)[0];
+					contactField = this.doGetByCpf(cpf, resp);
+					break;
+	
+				case "name":
+					String name = req.getParameterValues(paramName)[0];
+					contactField = this.doGetByName(name, resp);
+					break;
+					
+				default:
+					String email = req.getParameterValues(paramName)[0];
+					contactField = this.doGetByEmail(email, resp);
+					break;
 			}
 			
+			if (contactField == null) {
+				return;
+			}
+
+			contactField.setField(field);
 			listContactFields.add(contactField);
 		}
 		
-		this.doGetByParameters(listContactFields, resp);
+		this.doGetByContactFields(listContactFields, resp);
 	}
 	
-	private boolean validateCpf(String cpf, HttpServletResponse resp) throws IOException {
-		if (StringUtils.isBlank(cpf)) {
+	private ContactField doGetByCpf(String cpf, HttpServletResponse resp) throws IOException {
+		Boolean isCpfValid = this.validateCpf(cpf, resp);
+		if (isCpfValid == null) {
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "O cpf do contato deve ser informado.");
-			return false;
+			return null;
+		} else if (!isCpfValid) {
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "O cpf informado não é válido.");
+			return null;
+		}
+		
+		ContactField contactField = new ContactField();
+		contactField.setFilterOperator(FilterOperator.EQUAL);
+		contactField.setValue(CPFUtils.normalizeCpf(cpf));
+		return contactField;
+	}
+
+	private Boolean validateCpf(String cpf, HttpServletResponse resp) throws IOException {
+		if (StringUtils.isBlank(cpf)) {
+			return null;
 		}
 		
 		if (!CPFUtils.isValidCPF(cpf)) {
-			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "O cpf informado não é válido.");
 			return false;
 		}
 		
 		return true;
 	}
 	
-	private boolean validateName(String name, HttpServletResponse resp) throws IOException {
-		if (StringUtils.isBlank(name)) {
+	private ContactField doGetByName(String name, HttpServletResponse resp) throws IOException {
+		if (!this.validateName(name, resp)) {
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "O nome do contato deve ser informado.");
-			return false;
+			return null;
 		}
 		
-		return true;
+		ContactField contactField = new ContactField();
+		contactField.setFilterOperator(FilterOperator.EQUAL);
+		contactField.setValue(name);
+		return contactField;
+	}
+	
+	private boolean validateName(String name, HttpServletResponse resp) throws IOException {
+		return !StringUtils.isBlank(name);
+	}
+	
+	private ContactField doGetByEmail(String email, HttpServletResponse resp) throws IOException {
+		Boolean isEmailValid = this.validateEmail(email, resp);
+		if (isEmailValid == null) {
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "O email do contato deve ser informado.");
+			return null;
+		} else if (!isEmailValid) {
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "O email informado não é válido.");
+			return null;
+		}
+		
+		ContactField contactField = new ContactField();
+		contactField.setFilterOperator(FilterOperator.IN);
+		contactField.setValue(email);
+		return contactField;
 	}
 
-	private void doGetByParameters(List<ContactField> listContactFields, HttpServletResponse resp) throws IOException {
+	private Boolean validateEmail(String email, HttpServletResponse resp) {
+		if (StringUtils.isBlank(email)) {
+			return null;
+		}
+		
+		String regex = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
+		return email.matches(regex);
+	}
+
+	private void doGetByContactFields(List<ContactField> listContactFields, HttpServletResponse resp) throws IOException {
 		resp.setStatus(HttpServletResponse.SC_OK);
 		List<Contact> listContacts = DAO.getContactsByFields(listContactFields);
-		if (listContacts == null || listContactFields.isEmpty()) {
+		if (listContacts == null || listContacts.isEmpty()) {
 			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Contato(s) não encontrado(s).");
 			return;
 		}

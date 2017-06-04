@@ -4,7 +4,7 @@
     <datastore-index kind="Contact" ancestor="false" source="manual">
         <property name="name" direction="asc"/>
         <property name="filterName" direction="asc"/>
-        <property name="filterEmail" direction="asc"/>
+        <property name="emails" direction="asc"/>
         <property name="cpf" direction="asc"/>
         <property name="dateTime" direction="asc" />
     </datastore-index>

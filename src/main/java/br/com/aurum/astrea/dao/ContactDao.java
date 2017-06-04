@@ -2,6 +2,7 @@ package br.com.aurum.astrea.dao;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,8 @@ import com.googlecode.objectify.cmd.QueryKeys;
 
 import br.com.aurum.astrea.domain.Contact;
 import br.com.aurum.astrea.service.ContactField;
+import br.com.aurum.astrea.service.ContactField.Field;
+import br.com.aurum.astrea.utils.FilterUtils;
 
 public class ContactDao {
 	
@@ -32,29 +35,12 @@ public class ContactDao {
 		}
 		
 		contact.setDateTime(new Date());
-		contact.setFilterName(this.getFilterNormalize(contact.getName()));
+		contact.setFilterName(FilterUtils.getFilterNormalize(contact.getName()));
 		ofy().save().entity(contact).now();
 	}
 	
 	private boolean validate(Contact contact) {
 		return !StringUtils.isBlank(contact.getName());
-	}
-	
-	private String getFilterNormalize(String name) {
-		if (StringUtils.isBlank(name)) {
-			return null;
-		}
-		
-		String filterNormalize = name;
-		filterNormalize = filterNormalize.replace("%20", " ");
-		filterNormalize = filterNormalize.replace("\\", "\\\\");
-		filterNormalize = filterNormalize.replace("'", "\\'");
-		filterNormalize = filterNormalize.replace("\0", "\\0");
-		filterNormalize = filterNormalize.replace("\n", "\\n");
-		filterNormalize = filterNormalize.replace("\r", "\\r");
-		filterNormalize = filterNormalize.replace("\"", "\\\"");
-		filterNormalize = filterNormalize.replace("\\x1a", "\\Z");
-		return filterNormalize.toUpperCase();
 	}
 	
 	public List<Contact> list() {
@@ -123,46 +109,19 @@ public class ContactDao {
 		Query<Contact> query = ofy().load().type(Contact.class);
 
 		for (ContactField contactField : listContactFields) {
-			String value = contactField.getValue();
+			Object value = contactField.getValue();
 			FilterOperator filterOperator = contactField.getFilterOperator();
 			if (FilterOperator.EQUAL.equals(filterOperator)) {
-				value = this.getFilterNormalize(value);
+				value = FilterUtils.getFilterNormalize(value.toString());
+			} else if (FilterOperator.IN.equals(filterOperator)) {
+				value = Arrays.asList(value.toString());
 			}
 			
-			Filter filter = new FilterPredicate(contactField.getName(), filterOperator, value);
+			Filter filter = new FilterPredicate(contactField.getField().getFieldName(), filterOperator, value);
 			query = query.filter(filter);
 		}
 		
-		List<Contact> list = query.order("filterName").list();
+		List<Contact> list = query.order(Field.NAME.getFieldName()).list();
 		return list;
 	}
-
-//	private void teste(String value) {
-////		String name = "dhiego_henrique20@hotmail.com";
-//		String name = value;
-//		name = this.getFilterNormalize(name);
-//		System.err.println("buscarPor: " + name);
-//		
-//		Contact contact = ofy().load().type(Contact.class).filter("filterName", name).first().now();
-//		if (contact != null) {
-//			System.err.println("entrou aqui1: " + contact.getName());
-//		} else {
-//			System.err.println("não achou contato");
-//		}
-//		
-//		List<Contact> list = ofy().load().type(Contact.class).filter("filterName = ", name).list();
-//		for (Contact contact2 : list) {
-//			System.err.println("entrou aqui2: " + contact2.getName());
-//		}
-//		
-//		list = ofy().load().type(Contact.class).filter("filterName == ", name).list();
-//		for (Contact contact3 : list) {
-//			System.err.println("entrou aqui3: " + contact3.getName());
-//		}
-//		
-//		Query<Contact> filter = ofy().load().type(Contact.class).filter("filterName =", name);
-//		for (Contact c: filter) {
-//		    System.out.println("entrou aqui4: " + c.getName());
-//		}
-//	}
 }

@@ -29,6 +29,8 @@ public class Contact {
 	private String rg;
 
 	private List<String> phones;
+	
+	@Index
 	private List<String> emails;
 
 	private String address;
