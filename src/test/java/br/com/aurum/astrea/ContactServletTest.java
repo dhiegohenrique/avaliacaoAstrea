@@ -14,6 +14,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -271,20 +272,90 @@ public class ContactServletTest {
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void shouldBeReturnStatus500WhenRecoveringContactByEmptyName() throws IOException, ServletException {
 		Contact contact = this.insertContact();
 		
 		BufferedReader bufferedReader = new BufferedReader(new StringReader(this.gson.toJson(contact)));
 		
-		when(this.req.getRequestURI()).thenReturn("contacts?name=");
+		Vector parameterNames = new Vector();
+		parameterNames.addElement("name");
+		
+		when(this.req.getParameterNames()).thenReturn(parameterNames.elements());
+		when(this.req.getParameterValues(parameterNames.get(0).toString())).thenReturn(new String[]{""});
+		when(this.req.getRequestURI()).thenReturn("contacts");
 		when(this.req.getReader()).thenReturn(bufferedReader);
 		
 		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
 		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
 		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
 
-		this.contactServlet.doDelete(this.req, this.resp);
+		this.contactServlet.doGet(this.req, this.resp);
+		assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, intArg.getValue().intValue());
+	}
+	
+	@Test
+	public void shouldBeReturnContactByEmail() throws IOException {
+		Contact contact = this.insertContact();
+
+		StringWriter stringWriter = new StringWriter();
+		when(this.req.getRequestURI()).thenReturn("contacts?email=" + contact.getEmails().get(0));
+		when(this.resp.getWriter()).thenReturn(new PrintWriter(stringWriter));
+
+		this.contactServlet.doGet(this.req, this.resp);
+
+		String stringResponse = stringWriter.toString();
+		List<Contact> listContacts = this.getListContacts(stringResponse);
+		
+		for (Contact contactReturn : listContacts) {
+			assertEquals(contact.getEmails().get(0), contactReturn.getEmails().get(0));
+		}
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Test
+	public void shouldBeReturnStatus500WhenRecoveringContactByEmptyEmail() throws IOException, ServletException {
+		Contact contact = this.insertContact();
+		
+		BufferedReader bufferedReader = new BufferedReader(new StringReader(this.gson.toJson(contact)));
+		
+		Vector parameterNames = new Vector();
+		parameterNames.addElement("email");
+		
+		when(this.req.getParameterNames()).thenReturn(parameterNames.elements());
+		when(this.req.getParameterValues(parameterNames.get(0).toString())).thenReturn(new String[]{""});
+		when(this.req.getRequestURI()).thenReturn("contacts");
+		when(this.req.getReader()).thenReturn(bufferedReader);
+		
+		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
+		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
+
+		this.contactServlet.doGet(this.req, this.resp);
+		assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, intArg.getValue().intValue());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Test
+	public void shouldBeReturnStatus500WhenRecoveringContactByInvalidEmail() throws IOException, ServletException {
+		Contact contact = this.insertContact();
+		
+		BufferedReader bufferedReader = new BufferedReader(new StringReader(this.gson.toJson(contact)));
+		
+		Vector parameterNames = new Vector();
+		parameterNames.addElement("email");
+		
+		when(this.req.getParameterNames()).thenReturn(parameterNames.elements());
+		when(this.req.getParameterValues(parameterNames.get(0).toString())).thenReturn(new String[]{"EMAIL 124 . &%$@@hotmail.com"});
+		when(this.req.getRequestURI()).thenReturn("contacts");
+		when(this.req.getReader()).thenReturn(bufferedReader);
+		
+		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
+		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
+		
+		this.contactServlet.doGet(this.req, this.resp);
 		assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, intArg.getValue().intValue());
 	}
 	
@@ -306,37 +377,50 @@ public class ContactServletTest {
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void shouldBeReturnStatus500WhenRecoveringContactByEmptyCpf() throws IOException, ServletException {
 		Contact contact = this.insertContact();
 		
 		BufferedReader bufferedReader = new BufferedReader(new StringReader(this.gson.toJson(contact)));
 		
-		when(this.req.getRequestURI()).thenReturn("contacts?cpf=");
+		Vector parameterNames = new Vector();
+		parameterNames.addElement("cpf");
+		
+		when(this.req.getParameterNames()).thenReturn(parameterNames.elements());
+		when(this.req.getParameterValues(parameterNames.get(0).toString())).thenReturn(new String[]{""});
+		when(this.req.getRequestURI()).thenReturn("contacts");
+		
 		when(this.req.getReader()).thenReturn(bufferedReader);
 		
 		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
 		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
 		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
 
-		this.contactServlet.doDelete(this.req, this.resp);
+		this.contactServlet.doGet(this.req, this.resp);
 		assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, intArg.getValue().intValue());
 	}
 	
 	@Test
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void shouldBeReturnStatus500WhenRecoveringContactByInvalidCpf() throws IOException, ServletException {
 		Contact contact = this.insertContact();
 		
 		BufferedReader bufferedReader = new BufferedReader(new StringReader(this.gson.toJson(contact)));
 		
-		when(this.req.getRequestURI()).thenReturn("contacts?cpf=11111111111");
+		Vector parameterNames = new Vector();
+		parameterNames.addElement("cpf");
+		
+		when(this.req.getParameterNames()).thenReturn(parameterNames.elements());
+		when(this.req.getParameterValues(parameterNames.get(0).toString())).thenReturn(new String[]{"11111111111"});
+		when(this.req.getRequestURI()).thenReturn("contacts");
 		when(this.req.getReader()).thenReturn(bufferedReader);
 		
 		ArgumentCaptor<Integer> intArg = ArgumentCaptor.forClass(Integer.class);
 		ArgumentCaptor<String> stringArg = ArgumentCaptor.forClass(String.class);
 		doNothing().when(this.resp).sendError(intArg.capture(), stringArg.capture());
 
-		this.contactServlet.doDelete(this.req, this.resp);
+		this.contactServlet.doGet(this.req, this.resp);
 		assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, intArg.getValue().intValue());
 	}
 	
@@ -384,6 +468,11 @@ public class ContactServletTest {
 		Contact contact = new Contact();
 		contact.setName("Maria");
 		contact.setCpf("88461676009");
+		
+		List<String> listEmails = new ArrayList<>();
+		listEmails.add("maria1@hotmail.com");
+		listEmails.add("maria2@hotmail.com");
+		contact.setEmails(listEmails);
 		
 		ObjectifyService.ofy().save().entity(contact).now();
 		return contact;

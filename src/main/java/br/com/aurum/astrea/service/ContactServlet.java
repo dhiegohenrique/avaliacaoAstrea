@@ -144,6 +144,8 @@ public class ContactServlet extends HttpServlet {
 	}
 	
 	private ContactField doGetByCpf(String cpf, HttpServletResponse resp) throws IOException {
+		System.err.println("cpf: " + cpf);
+		
 		Boolean isCpfValid = this.validateCpf(cpf, resp);
 		if (isCpfValid == null) {
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "O cpf do contato deve ser informado.");
@@ -152,6 +154,8 @@ public class ContactServlet extends HttpServlet {
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "O cpf informado não é válido.");
 			return null;
 		}
+		
+		System.err.println("valido");
 		
 		ContactField contactField = new ContactField();
 		contactField.setFilterOperator(FilterOperator.EQUAL);
